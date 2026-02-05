@@ -1,1 +1,72 @@
-/* You can add global styles to this file, and also import other style files */
+/* Global styles and design tokens (generated from Figma node 0:9084) */
+
+/* Import font */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700&display=swap');
+
+:root {
+  /* Colors */
+  --color-primary: #635fc7;
+  --color-primary-hover: #a8a4ff;
+  --color-black: #000112;
+  --color-white: #ffffff;
+  --color-medium-gray: #828fa3;
+  --color-very-dark-bg: #20212c;
+  --color-dark-gray: #2b2c37;
+  --color-lines-dark: #3e3f4e;
+  --color-lines-light: #e4ebfa;
+  --color-light-bg: #f4f7fd;
+  --color-red: #ea5555;
+  --color-red-hover: #ff9898;
+
+  /* Typography */
+  --font-family-sans:
+    'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  --font-size-heading-xl: 24px;
+  --line-height-heading-xl: 24px;
+
+  --font-size-heading-m: 15px;
+  --line-height-heading-m: 19px;
+
+  --font-size-body-l: 13px;
+  --line-height-body-l: 23px;
+}
+
+/* Base */
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: var(--font-family-sans);
+  color: var(--color-black);
+  background: var(--color-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Utility classes (optional) */
+.h-xl {
+  font-size: var(--font-size-heading-xl);
+  line-height: var(--line-height-heading-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-black);
+}
+
+.h-m {
+  font-size: var(--font-size-heading-m);
+  line-height: var(--line-height-heading-m);
+  font-weight: var(--font-weight-bold);
+}
+
+.body-l {
+  font-size: var(--font-size-body-l);
+  line-height: var(--line-height-body-l);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-medium-gray);
+}
+
+/* End of tokens */
