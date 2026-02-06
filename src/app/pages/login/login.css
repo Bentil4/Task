@@ -84,7 +84,10 @@
 
 .login__button {
   width: 100%;
+  display: flex;
+  justify-content: center;
   margin-top: 8px;
+  padding: 12px 0;
 }
 
 .login__footer {

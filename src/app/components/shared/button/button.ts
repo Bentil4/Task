@@ -1,5 +1,4 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
-import { input, output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-button',
@@ -7,9 +6,6 @@ import { input, output } from '@angular/core';
   styleUrl: './button.css',
 
   changeDetection: ChangeDetectionStrategy.OnPush,
-  host: {
-    '[class.app-button]': 'true',
-  },
 })
 export class Button {
   public readonly variant = input<'primary' | 'secondary' | 'danger'>('primary');
@@ -19,7 +15,7 @@ export class Button {
   public readonly ariaLabel = input<string | null>(null);
   public readonly clicked = output<Event>();
 
-  onClick(event: Event) {
+  onButtonClick(event: Event) {
     if (this.disabled()) {
       event.preventDefault();
     }

@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { Button } from '../../components/shared/button/button';
-import { output } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -11,10 +10,11 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Login {
-  private router = inject(Router)
-  readonly loginSubmit = output<Event>();
+  private router = inject(Router);
 
-  onLogin(event: Event) {
+  onUserLogin(event: Event) {
+    event.preventDefault();
+    localStorage.setItem('isAuthenticated', 'true');
     this.router.navigate(['/']);  
   }
 }

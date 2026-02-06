@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { Button } from '../../components/shared/button/button';
-import { output } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-settings',
@@ -10,9 +10,14 @@ import { output } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class Settings {
-  readonly saveSettings = output<Event>();
+  private router = inject(Router);
 
-  onSave(event: Event) {
-    this.saveSettings.emit(event);
+  onSaveSettings() {
+    console.log('Settings saved');
+  }
+
+  onLogout() {
+    localStorage.removeItem('isAuthenticated');
+    this.router.navigate(['/login']);
   }
 }

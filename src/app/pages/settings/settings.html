@@ -56,8 +56,9 @@
     </div>
 
     <div class="settings__actions">
+      <app-button variant="danger" (clicked)="onLogout()">Log Out</app-button>
       <app-button variant="secondary">Cancel</app-button>
-      <app-button variant="primary" (clicked)="onSave($event)">Save Changes</app-button>
+      <app-button variant="primary" (clicked)="onSaveSettings()">Save Changes</app-button>
     </div>
   </div>
 </div>
