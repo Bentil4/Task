@@ -1,6 +1,15 @@
 <header class="header">
   <h1 class="header__title">{{ title() }}</h1>
   <div class="header__actions">
+    <div class="header__filter">
+      <label for="status-filter" class="header__filter-label">Filter:</label>
+      <select id="status-filter" class="header__filter-select" (change)="onFilterChange($event)" [value]="currentFilter()">
+        <option value="">All</option>
+        <option value="Todo">Todo</option>
+        <option value="Doing">Doing</option>
+        <option value="Done">Done</option>
+      </select>
+    </div>
     <app-button variant="primary" ariaLabel="Add New Task" (clicked)="onAddTask($event)"
       >+ Add New Task</app-button
     >

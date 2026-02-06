@@ -1,6 +1,5 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input, output } from '@angular/core';
 import { Button } from '../shared/button/button';
-import { output, input } from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -11,9 +10,16 @@ import { output, input } from '@angular/core';
 })
 export class Header {
   readonly title = input<string>('Platform Launch');
+  readonly currentFilter = input<string>('');
   readonly addTask = output<Event>();
+  readonly filterChange = output<string>();
 
   onAddTask(event: Event) {
     this.addTask.emit(event);
+  }
+
+  onFilterChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    this.filterChange.emit(select.value);
   }
 }
