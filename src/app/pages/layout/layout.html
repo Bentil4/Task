@@ -1,8 +1,18 @@
 <div class="app-shell">
-  <app-sidebar (hide)="onHideSidebar()"></app-sidebar>
+  <app-sidebar (hideSidebar)="onHideSidebar()"></app-sidebar>
 
   <div class="app-content">
-    <app-header (addTask)="onAddTask($event)"></app-header>
-    <app-board (addColumn)="onAddColumn($event)"></app-board>
+    <app-header 
+      [title]="boardTitle()" 
+      [currentFilter]="filterStatus() || ''"
+      (addTask)="onAddNewTask($event)"
+      (filterChange)="onFilterChange($event)"
+    ></app-header>
+    <app-board 
+      [boardId]="boardId()" 
+      [filterStatus]="filterStatus()" 
+      [sortBy]="sortBy()" 
+      (addColumn)="onAddNewColumn($event)"
+    ></app-board>
   </div>
 </div>
