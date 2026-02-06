@@ -1,0 +1,155 @@
+:host {
+  display: block;
+}
+
+.not-found {
+  min-height: 100vh;
+  background: var(--color-light-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.not-found__container {
+  display: flex;
+  align-items: center;
+  gap: 80px;
+  max-width: 1000px;
+  width: 100%;
+}
+
+.not-found__content {
+  flex: 1;
+  text-align: center;
+}
+
+.not-found__icon {
+  margin-bottom: 32px;
+}
+
+.not-found__number {
+  font-size: 120px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary);
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.not-found__title {
+  font-size: 32px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-black);
+  margin: 0 0 16px 0;
+}
+
+.not-found__message {
+  font-size: var(--font-size-body-l);
+  color: var(--color-medium-gray);
+  margin: 0 0 40px 0;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.not-found__actions {
+  display: flex;
+  justify-content: center;
+}
+
+.not-found__illustration {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 400px;
+}
+
+.not-found__shapes {
+  position: relative;
+  width: 300px;
+  height: 300px;
+}
+
+.not-found__shape {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.1;
+}
+
+.not-found__shape--1 {
+  width: 120px;
+  height: 120px;
+  background: var(--color-primary);
+  top: 20px;
+  left: 40px;
+  animation: float 6s ease-in-out infinite;
+}
+
+.not-found__shape--2 {
+  width: 80px;
+  height: 80px;
+  background: var(--color-primary-hover);
+  bottom: 60px;
+  right: 20px;
+  animation: float 4s ease-in-out infinite reverse;
+}
+
+.not-found__shape--3 {
+  width: 60px;
+  height: 60px;
+  background: var(--color-primary);
+  top: 120px;
+  right: 80px;
+  animation: float 5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@media (max-width: 768px) {
+  .not-found__container {
+    flex-direction: column;
+    gap: 40px;
+    text-align: center;
+  }
+  
+  .not-found__number {
+    font-size: 80px;
+  }
+  
+  .not-found__title {
+    font-size: 24px;
+  }
+  
+  .not-found__illustration {
+    height: 200px;
+  }
+  
+  .not-found__shapes {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .not-found__shape--1 {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .not-found__shape--2 {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .not-found__shape--3 {
+    width: 40px;
+    height: 40px;
+  }
+}

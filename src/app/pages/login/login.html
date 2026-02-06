@@ -1,0 +1,39 @@
+<div class="login">
+  <div class="login__card">
+    <div class="login__header">
+      <img src="assets/logo-mobile.svg" alt="" />
+      <h1 class="login__title">Welcome to Kanban</h1>
+      <p class="login__subtitle">Sign in to manage your projects</p>
+    </div>
+
+    <form class="login__form" (submit)="onLogin($event)">
+      <div class="login__field">
+        <label class="login__label" for="email">Email</label>
+        <input
+          class="login__input"
+          type="email"
+          id="email"
+          placeholder="Enter your email"
+          required
+        />
+      </div>
+
+      <div class="login__field">
+        <label class="login__label" for="password">Password</label>
+        <input
+          class="login__input"
+          type="password"
+          id="password"
+          placeholder="Enter your password"
+          required
+        />
+      </div>
+
+      <app-button variant="primary" type="submit" class="login__button">Sign In</app-button>
+    </form>
+
+    <div class="login__footer">
+      <p class="login__help">Don't have an account? <a href="#" class="login__link">Sign up</a></p>
+    </div>
+  </div>
+</div>
