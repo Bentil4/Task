@@ -1,0 +1,8 @@
+<div class="app-shell">
+  <app-sidebar (hide)="onHideSidebar()"></app-sidebar>
+
+  <div class="app-content">
+    <app-header (addTask)="onAddTask($event)"></app-header>
+    <app-board (addColumn)="onAddColumn($event)"></app-board>
+  </div>
+</div>
