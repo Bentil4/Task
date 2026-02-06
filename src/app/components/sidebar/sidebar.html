@@ -1,0 +1,63 @@
+<aside class="sidebar" role="navigation" aria-label="Main sidebar">
+  <div class="sidebar__brand">
+    <img [src]="logo()" alt="Kanban logo" />
+  </div>
+
+  <div class="sidebar__boards">
+    <div class="sidebar__label">ALL BOARDS (3)</div>
+    <ul class="sidebar__list">
+      <li class="sidebar__item sidebar__item--active">
+        <img src="assets/icon-board.svg" alt="Board icon" />
+        <p>Platform Launch</p>
+      </li>
+      <li class="sidebar__item item_listed">
+        <img src="assets/icon-board.svg" alt="Board icon" />
+        <p>Marketing Plan</p>
+      </li>
+      <li class="sidebar__item item_listed">
+        <img src="assets/icon-board.svg" alt="Board icon" />
+        <p>Roadmap</p>
+      </li>
+    </ul>
+    <button class="sidebar__create" (click)="onCreateBoard()" aria-label="Create new board">
+      <img src="assets/icon-board.svg" alt="Add task icon" />
+      <span>+ Create New Board</span>
+    </button>
+  </div>
+
+  <div class="sidebar__footer">
+    <div class="sidebar__theme" role="group" aria-label="Theme selector">
+      <button
+        class="sidebar__theme-btn"
+        (click)="themeService.setTheme('light')"
+        [attr.aria-pressed]="themeService.theme() === 'light'"
+        aria-label="Light theme"
+        title="Light theme"
+      >
+        <img src="assets/icon-light-theme.svg" alt="Light theme icon" />
+      </button>
+
+      <button
+        class="sidebar__theme-btn"
+        (click)="themeService.setTheme('dark')"
+        [attr.aria-pressed]="themeService.theme() === 'dark'"
+        aria-label="Dark theme"
+        title="Dark theme"
+      >
+        <img src="assets/icon-dark-theme.svg" alt="Dark theme icon" />
+      </button>
+    </div>
+
+    <div
+      class="sidebar__toggle"
+      (click)="onToggleHide()"
+      role="button"
+      tabindex="0"
+      aria-pressed="false"
+      aria-label="Hide sidebar"
+    >
+      <img src="assets/icon-hide-sidebar.svg" alt="Hide sidebar icon" />
+      <span class="sidebar__toggle-text">Hide Sidebar</span>
+    </div>
+  </div>
+</aside>
