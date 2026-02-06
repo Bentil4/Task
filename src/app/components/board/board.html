@@ -1,0 +1,20 @@
+<main class="board" role="main">
+  <div *ngIf="columns && columns.length > 0; else empty">
+    <div class="board__columns">
+      <section class="board__column" *ngFor="let column of columns">
+        <h2 class="board__column-title">{{ column.name }}</h2>
+        <div class="board__cards">
+          <app-board-card *ngFor="let task of column.tasks" [card]="task"></app-board-card>
+        </div>
+      </section>
+    </div>
+  </div>
+  <ng-template #empty>
+    <div class="board__empty">
+      <p class="board__message">This board is empty. Create a new column to get started.</p>
+      <app-button variant="primary" class="board__cta" (clicked)="onAddColumn($event)">
+        + Add New Column
+      </app-button>
+    </div>
+  </ng-template>
+</main>
