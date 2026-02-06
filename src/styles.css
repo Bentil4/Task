@@ -94,9 +94,8 @@ app-board {
 /* Dark theme overrides (applies when .theme-dark is added to <html>) */
 .theme-dark {
   /* Surfaces */
-  --color-white: #0b0d12; /* used as main surface in dark mode */
+  --color-white: #2b2c37; /* used as main surface in dark mode */
   --color-light-bg: #20212c; /* board background */
-
   /* Text */
   --color-black: #ffffff;
 
@@ -104,5 +103,13 @@ app-board {
   --color-lines-light: #3e3f4e;
 
   /* Muted text */
-  --color-medium-gray: #9aa0b2;
+  --color-medium-gray: #828fa3;
+}
+
+.theme-dark .board__new-column {
+  background: linear-gradient(180deg, rgba(43, 44, 55, 0.25) 0%, rgba(43, 44, 55, 0.125) 100%);
+}
+
+.theme-dark .board__new-column:hover {
+  background: linear-gradient(180deg, rgba(43, 44, 55, 0.4) 0%, rgba(43, 44, 55, 0.2) 100%);
 }
