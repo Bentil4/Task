@@ -1,0 +1,61 @@
+:host {
+  display: block;
+}
+
+.board-card {
+  display: contents;
+}
+
+.card {
+  background: var(--color-white);
+  border-radius: 8px;
+  padding: 23px 16px;
+  box-shadow: 0 4px 6px rgba(54, 78, 126, 0.101545);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(54, 78, 126, 0.2);
+}
+
+.card:hover .card__title {
+  color: var(--color-primary);
+}
+
+.card__title {
+  margin: 0 0 8px 0;
+  font-size: 15px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-black);
+  line-height: 19px;
+  transition: color 0.2s ease;
+}
+
+.card__commit {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  color: var(--color-medium-gray);
+  line-height: 15px;
+  font-style: italic;
+}
+
+.card__description {
+  margin: 0 0 8px 0;
+  font-size: 12px;
+  color: var(--color-medium-gray);
+  min-height: 18px;
+}
+
+.card__meta {
+  display: flex;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.card__subtasks {
+  font-size: 12px;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-medium-gray);
+  line-height: 15px;
+}
