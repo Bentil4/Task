@@ -1,0 +1,11 @@
+<header class="header">
+  <h1 class="header__title">{{ title() }}</h1>
+  <div class="header__actions">
+    <app-button variant="primary" ariaLabel="Add New Task" (clicked)="onAddTask($event)"
+      >+ Add New Task</app-button
+    >
+    <button class="header__more" aria-label="More options">
+      <img src="assets/icon-vertical-ellipsis.svg" alt="vertical-ellipsis" />
+    </button>
+  </div>
+</header>
