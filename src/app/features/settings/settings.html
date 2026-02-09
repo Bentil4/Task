@@ -1,0 +1,67 @@
+<div class="settings">
+  <div class="settings__container">
+    <header class="settings__header">
+      <button class="settings__back-button" (click)="onGoBack()" aria-label="Go back">
+        ← Back
+      </button>
+      <h1 class="settings__title">Settings</h1>
+      <p class="settings__subtitle">Manage your account and preferences</p>
+    </header>
+
+    <div class="settings__content">
+      <section class="settings__section">
+        <h2 class="settings__section-title">Profile</h2>
+        <div class="settings__form">
+          <div class="settings__field">
+            <label class="settings__label" for="name">Full Name</label>
+            <input class="settings__input" type="text" id="name" value="John Doe">
+          </div>
+          <div class="settings__field">
+            <label class="settings__label" for="email">Email</label>
+            <input class="settings__input" type="email" id="email" value="john@example.com">
+          </div>
+        </div>
+      </section>
+
+      <section class="settings__section">
+        <h2 class="settings__section-title">Preferences</h2>
+        <div class="settings__form">
+          <div class="settings__field">
+            <label class="settings__label">Theme</label>
+            <select class="settings__select">
+              <option value="light">Light</option>
+              <option value="dark">Dark</option>
+              <option value="auto">Auto</option>
+            </select>
+          </div>
+          <div class="settings__field">
+            <label class="settings__checkbox-label">
+              <input type="checkbox" class="settings__checkbox" checked>
+              <span class="settings__checkbox-text">Email notifications</span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section class="settings__section">
+        <h2 class="settings__section-title">Security</h2>
+        <div class="settings__form">
+          <div class="settings__field">
+            <label class="settings__label" for="current-password">Current Password</label>
+            <input class="settings__input" type="password" id="current-password" placeholder="Enter current password">
+          </div>
+          <div class="settings__field">
+            <label class="settings__label" for="new-password">New Password</label>
+            <input class="settings__input" type="password" id="new-password" placeholder="Enter new password">
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <div class="settings__actions">
+      <app-button variant="danger" (clicked)="onLogout()">Log Out</app-button>
+      <app-button variant="secondary">Cancel</app-button>
+      <app-button variant="primary" (clicked)="onSaveSettings()">Save Changes</app-button>
+    </div>
+  </div>
+</div>

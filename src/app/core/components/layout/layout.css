@@ -1,0 +1,26 @@
+.app-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.app-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  transition: margin-left 250ms ease;
+}
+
+.app-content.sidebar-visible {
+  margin-left: 300px;
+}
+
+app-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+app-board {
+  flex: 1;
+}

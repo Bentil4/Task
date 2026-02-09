@@ -1,5 +1,6 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet, Router, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
+import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-root',
@@ -7,16 +8,4 @@ import { RouterOutlet, Router, NavigationStart, NavigationEnd, NavigationError }
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
-export class App {
-  constructor(private router: Router) {
-    this.router.events.subscribe((event) => {
-      if (event instanceof NavigationStart) {
-        console.log('Navigation started:', event.url);
-      } else if (event instanceof NavigationEnd) {
-        console.log('Navigation completed:', event.url);
-      } else if (event instanceof NavigationError) {
-        console.error('Navigation error:', event.error);
-      }
-    });
-  }
-}
+export class App {}

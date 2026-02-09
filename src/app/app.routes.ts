@@ -1,21 +1,24 @@
 import { Routes } from '@angular/router';
-import { layout } from './pages/layout/layout';
-import { Login } from './pages/login/login';
-import { Settings } from './pages/settings/settings';
-import { PageNotFound } from './pages/page-not-found/page-not-found';
-import { authGuard } from './guards/auth.guard';
+import { Login } from './features/auth';
+import { Settings } from './features/settings/settings';
+import { PageNotFound } from './core/components/page-not-found/page-not-found';
+import { authGuard, guestGuard } from './features/auth';
 
 export const routes: Routes = [
   {
     path: '',
-    component: layout,
-    title: 'Home',
-    canActivate: [authGuard],
+    redirectTo: 'board',
+    pathMatch: 'full',
   },
   {
-    path: 'board/:id',
-    component: layout,
-    title: 'Board',
+    path: 'login',
+    component: Login,
+    title: 'Login',
+    canActivate: [guestGuard],
+  },
+  {
+    path: 'board',
+    loadChildren: () => import('./features/board/board.routes').then((m) => m.BOARD_ROUTES),
     canActivate: [authGuard],
   },
   {
@@ -23,11 +26,6 @@ export const routes: Routes = [
     component: Settings,
     title: 'Settings',
     canActivate: [authGuard],
-  },
-  {
-    path: 'login',
-    component: Login,
-    title: 'Login',
   },
   {
     path: '**',

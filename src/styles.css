@@ -7,21 +7,29 @@
   /* Colors */
   --color-primary: #635fc7;
   --color-primary-hover: #a8a4ff;
+  --color-primary-light: #a8a4ff;
   --color-black: #000112;
   --color-white: #ffffff;
   --color-medium-gray: #828fa3;
+  --color-gray: #828fa3;
   --color-very-dark-bg: #20212c;
   --color-dark-gray: #2b2c37;
+  --color-darker-gray: #20212c;
   --color-lines-dark: #3e3f4e;
   --color-lines-light: #e4ebfa;
   --color-light-bg: #f4f7fd;
+  --color-light-blue: #f4f7fd;
+  --color-light-gray: #e4ebfa;
   --color-red: #ea5555;
   --color-red-hover: #ff9898;
+  --color-destructive: #ea5555;
+  --color-destructive-light: #ff9898;
 
   /* Typography */
   --font-family-sans:
     'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
     sans-serif;
+  --font-family: 'Plus Jakarta Sans', sans-serif;
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-bold: 700;
@@ -34,6 +42,33 @@
 
   --font-size-body-l: 13px;
   --line-height-body-l: 23px;
+
+  --font-size-xl: 1.5rem;
+  --font-size-l: 1.125rem;
+  --font-size-m: 0.9375rem;
+  --font-size-s: 0.75rem;
+  --font-size-body-m: 0.75rem;
+
+  --line-height-xl: 1.875rem;
+  --line-height-l: 1.4375rem;
+  --line-height-m: 1.1875rem;
+  --line-height-s: 0.9375rem;
+  --line-height-body-m: 0.9375rem;
+
+  --letter-spacing-s: 0.15rem;
+
+  /* Light theme defaults */
+  --bg-primary: var(--color-light-blue);
+  --bg-secondary: var(--color-white);
+  --bg-tertiary: var(--color-light-gray);
+  --text-primary: var(--color-black);
+  --text-secondary: var(--color-gray);
+  --text-heading: var(--color-black);
+  --border-color: var(--color-light-gray);
+  --line-color: var(--color-light-gray);
+  --btn-secondary-bg: rgba(99, 95, 199, 0.1);
+  --btn-secondary-bg-hover: rgba(99, 95, 199, 0.25);
+  --sidebar-btn-hover-bg: rgba(99, 95, 199, 0.1);
 }
 
 /* Base */
@@ -42,8 +77,8 @@ body {
   height: 100%;
   margin: 0;
   font-family: var(--font-family-sans);
-  color: var(--color-black);
-  background: var(--color-white);
+  color: var(--text-primary);
+  background: var(--bg-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -81,6 +116,10 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  transition: margin-left 250ms ease;
+}
+.app-content.sidebar-visible {
+  margin-left: 300px;
 }
 app-header {
   position: sticky;
@@ -104,6 +143,19 @@ app-board {
 
   /* Muted text */
   --color-medium-gray: #828fa3;
+
+  /* Theme variables */
+  --bg-primary: var(--color-darker-gray);
+  --bg-secondary: var(--color-dark-gray);
+  --bg-tertiary: var(--color-lines-dark);
+  --text-primary: var(--color-white);
+  --text-secondary: var(--color-gray);
+  --text-heading: var(--color-white);
+  --border-color: var(--color-lines-dark);
+  --line-color: var(--color-lines-dark);
+  --btn-secondary-bg: var(--color-white);
+  --btn-secondary-bg-hover: var(--color-white);
+  --sidebar-btn-hover-bg: var(--color-white);
 }
 
 .theme-dark .board__new-column {
