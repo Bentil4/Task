@@ -12,11 +12,14 @@ export class Header {
   public readonly title = input<string>('Platform Launch');
   public readonly currentFilter = input<string>('');
   public readonly filterChange = output<string>();
+  public readonly addTask = output<void>();
 
   public onFilterChange(event: Event): void {
     const select = event.target as HTMLSelectElement;
     this.filterChange.emit(select.value);
   }
 
-  public onAddTask(): void {}
+  public onAddTask(): void {
+    this.addTask.emit();
+  }
 }
