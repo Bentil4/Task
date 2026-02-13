@@ -17,6 +17,7 @@
       [title]="boardTitle()" 
       [currentFilter]="filterStatus() || ''"
       (filterChange)="onFilterChange($event)"
+      (addTask)="onAddTask()"
     ></app-header>
     <app-board 
       [boardId]="boardId()" 
@@ -24,4 +25,15 @@
       [sortBy]="sortBy()"
     ></app-board>
   </section>
+
+  @if (showAddTaskModal()) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <app-add-task-form
+          (taskCreated)="onTaskCreated($event)"
+          (canceled)="closeModal()"
+        />
+      </div>
+    </div>
+  }
 </section>
