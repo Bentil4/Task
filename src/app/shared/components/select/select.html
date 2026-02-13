@@ -1,0 +1,19 @@
+@if (label()) {
+  <label class="select-label">{{ label() }}</label>
+}
+<div class="select-wrapper">
+  <select
+    class="select-field"
+    [value]="value()"
+    [required]="required()"
+    [disabled]="disabled()"
+    (change)="onValueChange(($any($event.target)).value)"
+  >
+    @for (option of options(); track option.value) {
+      <option [value]="option.value">{{ option.label }}</option>
+    }
+  </select>
+  <svg class="select-icon" width="10" height="7" xmlns="http://www.w3.org/2000/svg">
+    <path stroke="#635FC7" stroke-width="2" fill="none" d="m1 1 4 4 4-4"/>
+  </svg>
+</div>
