@@ -1,0 +1,14 @@
+@if (label()) {
+  <label class="input-label">{{ label() }}</label>
+}
+<section class="input-wrapper">
+  <input
+    class="input-field"
+    [type]="type()"
+    [placeholder]="placeholder()"
+    [value]="value()"
+    [required]="required()"
+    [disabled]="disabled()"
+    (input)="onValueChange($any($event.target).value)"
+  />
+</section>
