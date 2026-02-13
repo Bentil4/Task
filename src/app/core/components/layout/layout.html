@@ -1,4 +1,4 @@
-<div class="app-shell">
+<section class="app-shell">
   <app-sidebar 
     [hidden]="sidebarHidden()" 
     (hide)="sidebarHidden.set(true)"
@@ -12,7 +12,7 @@
     ></button>
   }
 
-  <div class="app-content" [class.sidebar-visible]="!sidebarHidden()">
+  <section class="app-content" [class.sidebar-visible]="!sidebarHidden()">
     <app-header 
       [title]="boardTitle()" 
       [currentFilter]="filterStatus() || ''"
@@ -23,5 +23,5 @@
       [filterStatus]="filterStatus()" 
       [sortBy]="sortBy()"
     ></app-board>
-  </div>
-</div>
+  </section>
+</section>

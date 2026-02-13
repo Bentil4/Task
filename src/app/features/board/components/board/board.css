@@ -4,7 +4,6 @@
 
 .board {
   background: var(--color-light-bg);
-  height: calc(100vh - 97px);
   padding: 24px;
   box-sizing: border-box;
   overflow-x: auto;
@@ -36,7 +35,6 @@
   display: flex;
   gap: 24px;
   align-items: flex-start;
-  height: calc(100vh - 145px);
 }
 
 .board__column {

@@ -1,6 +1,6 @@
-import { Board } from '../models/board.model';
+import { IBoard } from '../models/board.model';
 
-export const BOARDS: Board[] = [
+export const BOARDS: IBoard[] = [
   { id: 1, name: 'Platform Launch' },
   { id: 2, name: 'Marketing Plan' },
   { id: 3, name: 'Roadmap' },
