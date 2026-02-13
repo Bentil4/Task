@@ -73,7 +73,8 @@
 .sidebar__link img {
   width: 16px;
   height: 16px;
-  filter: brightness(0) saturate(100%) invert(64%) sepia(11%) saturate(566%) hue-rotate(177deg) brightness(92%) contrast(87%);
+  filter: brightness(0) saturate(100%) invert(64%) sepia(11%) saturate(566%) hue-rotate(177deg)
+    brightness(92%) contrast(87%);
 }
 
 .sidebar__link:hover {
@@ -82,7 +83,8 @@
 }
 
 .sidebar__link:hover img {
-  filter: brightness(0) saturate(100%) invert(42%) sepia(93%) saturate(1352%) hue-rotate(228deg) brightness(92%) contrast(89%);
+  filter: brightness(0) saturate(100%) invert(42%) sepia(93%) saturate(1352%) hue-rotate(228deg)
+    brightness(92%) contrast(89%);
 }
 
 .sidebar__item--active .sidebar__link,
@@ -112,7 +114,8 @@
 .sidebar__create img {
   width: 16px;
   height: 16px;
-  filter: brightness(0) saturate(100%) invert(42%) sepia(93%) saturate(1352%) hue-rotate(228deg) brightness(92%) contrast(89%);
+  filter: brightness(0) saturate(100%) invert(42%) sepia(22%) saturate(1485%) hue-rotate(203deg)
+    brightness(92%) contrast(96%);
 }
 
 .sidebar__footer {
@@ -145,8 +148,8 @@
 
 .sidebar__settings:hover,
 .sidebar__settings--active {
-  background: rgba(99, 95, 199, 0.1);
-  color: var(--color-primary);
+  background: var(--sidebar-down-bg);
+  color: var(--sidebar-down-text);
 }
 
 .sidebar__settings svg {
@@ -172,8 +175,8 @@
 }
 
 .sidebar__toggle:hover {
-  background: rgba(99, 95, 199, 0.1);
-  color: var(--color-primary);
+  background: var(--sidebar-down-bg);
+  color: var(--sidebar-down-text);
 }
 
 .sidebar__toggle:focus {

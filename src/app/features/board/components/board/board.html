@@ -4,7 +4,12 @@
       @for (column of columns; track column.name) {
         <section class="board__column">
           <h2 class="board__column-title">{{ column.name }} ({{ column.tasks.length }})</h2>
-          <div class="board__cards" cdkDropList [cdkDropListData]="column.tasks" (cdkDropListDropped)="drop($event)">
+          <div
+            class="board__cards"
+            cdkDropList
+            [cdkDropListData]="column.tasks"
+            (cdkDropListDropped)="drop($event)"
+          >
             @for (task of column.tasks; track task.title) {
               <app-board-card [card]="task" cdkDrag></app-board-card>
             }

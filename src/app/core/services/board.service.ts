@@ -1,13 +1,13 @@
 import { Injectable, signal } from '@angular/core';
-import { Board } from '../models/board.model';
+import { IBoard } from '../models/board.model';
 import { BOARDS, DATA_URL } from '../constants/app.constants';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BoardService {
-  public readonly boards = signal<Board[]>(BOARDS);
-  public readonly allBoardsData = signal<Board[]>([]);
+  public readonly boards = signal<IBoard[]>(BOARDS);
+  public readonly allBoardsData = signal<IBoard[]>([]);
   public readonly isLoading = signal<boolean>(false);
 
   public async loadBoardsData(): Promise<void> {
@@ -27,11 +27,11 @@ export class BoardService {
     }
   }
 
-  public getBoardById(id: number): Board | undefined {
+  public getBoardById(id: number): IBoard | undefined {
     return this.boards().find(board => board.id === id);
   }
 
-  public getBoardDataByIndex(index: number): Board | undefined {
+  public getBoardDataByIndex(index: number): IBoard | undefined {
     const data = this.allBoardsData();
     if (index < 0 || index >= data.length) return undefined;
     return data[index];

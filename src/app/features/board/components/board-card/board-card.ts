@@ -1,5 +1,5 @@
 import { Component, ChangeDetectionStrategy, input, computed } from '@angular/core';
-import { Task } from '../../../../core/models';
+import { ITask } from '../../../../core/models';
 
 @Component({
   selector: 'app-board-card',
@@ -8,7 +8,7 @@ import { Task } from '../../../../core/models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BoardCard {
-  public readonly card = input<Task | null>(null);
+  public readonly card = input<ITask | null>(null);
 
   public readonly completedSubtasksCount = computed(() => {
     const cardData = this.card();

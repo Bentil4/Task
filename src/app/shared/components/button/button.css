@@ -34,7 +34,7 @@
 /* Variants */
 .btn--primary {
   background: var(--color-primary);
-  color: var(--color-white);
+  color: white;
 }
 .btn--primary:hover {
   background: var(--color-primary-hover);

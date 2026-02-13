@@ -14,7 +14,7 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { BoardCard } from '../board-card/board-card';
-import { Task, Column } from '../../../../core/models';
+import { ITask, IColumn } from '../../../../core/models';
 import { BoardService } from '../../../../core/services';
 
 @Component({
@@ -32,7 +32,7 @@ export class Board implements OnInit {
   public readonly filterStatus = input<string | null>(null);
   public readonly sortBy = input<string | null>(null);
 
-  public columns: Column[] = [];
+  public columns: IColumn[] = [];
 
   constructor() {
     effect(() => {
@@ -49,7 +49,7 @@ export class Board implements OnInit {
     if (!boardData) return;
 
     const columns =
-      boardData.columns?.map((column: Column) => ({
+      boardData.columns?.map((column: IColumn) => ({
         ...column,
         tasks: this.filterAndSortTasks(column.tasks, filterStatus, sortBy),
       })) ?? [];
@@ -59,10 +59,10 @@ export class Board implements OnInit {
   }
 
   public filterAndSortTasks(
-    tasks: Task[],
+    tasks: ITask[],
     filterStatus: string | null,
     sortBy: string | null,
-  ): Task[] {
+  ): ITask[] {
     let filtered = [...tasks];
 
     if (filterStatus) {
@@ -80,7 +80,7 @@ export class Board implements OnInit {
     return filtered;
   }
 
-  public drop(event: CdkDragDrop<Task[]>): void {
+  public drop(event: CdkDragDrop<ITask[]>): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
