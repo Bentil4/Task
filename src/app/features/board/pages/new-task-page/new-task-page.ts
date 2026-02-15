@@ -3,6 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AddTaskFormComponent } from '../../components/add-task-form/add-task-form';
 import type { TaskFormData } from '../../components/add-task-form/add-task-form';
 import { BoardService } from '../../../../core/services';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-task-page',
@@ -15,14 +17,19 @@ export class NewTaskPage {
   private route = inject(ActivatedRoute);
   private boardService = inject(BoardService);
 
-  onTaskCreated(taskData: TaskFormData): void {
+  public boardId = toSignal(
+    this.route.paramMap.pipe(map(params => Number(params.get('id')) || 1)),
+    { initialValue: 1 }
+  );
+
+  public onTaskCreated(taskData: TaskFormData): void {
     const boardId = this.route.snapshot.paramMap.get('id');
     console.log('Task created:', taskData, 'for board:', boardId);
     
     this.navigateToBoard();
   }
 
-  onCancel(): void {
+  public onCancel(): void {
     this.navigateToBoard();
   }
 

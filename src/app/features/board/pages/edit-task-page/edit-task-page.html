@@ -3,6 +3,7 @@
     @if (task()) {
       <app-edit-task-form
         [task]="task()"
+        [boardId]="boardId()"
         (taskUpdated)="onTaskUpdated($event)"
         (canceled)="onCancel()"
       />
