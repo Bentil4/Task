@@ -1,0 +1,11 @@
+@if (label()) {
+  <label class="date-label">{{ label() }}</label>
+}
+<input
+  type="date"
+  class="date-field"
+  [value]="value()"
+  (input)="onValueChange($any($event.target).value)"
+  [required]="required()"
+  [disabled]="disabled()"
+/>
