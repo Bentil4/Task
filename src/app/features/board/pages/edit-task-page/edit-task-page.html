@@ -1,0 +1,11 @@
+<div class="page-overlay">
+  <div class="page-content">
+    @if (task()) {
+      <app-edit-task-form
+        [task]="task()"
+        (taskUpdated)="onTaskUpdated($event)"
+        (canceled)="onCancel()"
+      />
+    }
+  </div>
+</div>

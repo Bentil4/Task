@@ -7,6 +7,7 @@ import {
   input,
   effect,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import {
   CdkDragDrop,
   DragDropModule,
@@ -27,6 +28,7 @@ import { BoardService } from '../../../../core/services';
 export class Board implements OnInit {
   private changeDetectorRef = inject(ChangeDetectorRef);
   private boardService = inject(BoardService);
+  private router = inject(Router);
 
   public readonly boardId = input<number>(1);
   public readonly filterStatus = input<string | null>(null);
@@ -97,6 +99,10 @@ export class Board implements OnInit {
       }
     }
     this.changeDetectorRef.markForCheck();
+  }
+
+  public onTaskClick(taskIndex: number): void {
+    this.router.navigate(['/board', this.boardId(), 'edit', taskIndex]);
   }
 
   ngOnInit(): void {

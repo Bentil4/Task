@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { IBoard } from '../models/board.model';
+import { IBoard, ITask } from '../models/board.model';
 import { BOARDS, DATA_URL } from '../constants/app.constants';
 
 @Injectable({
@@ -35,5 +35,24 @@ export class BoardService {
     const data = this.allBoardsData();
     if (index < 0 || index >= data.length) return undefined;
     return data[index];
+  }
+
+  public getTaskById(boardId: number, taskId: string): ITask | undefined {
+    const board = this.getBoardDataByIndex(boardId - 1);
+    if (!board?.columns) return undefined;
+    
+    for (const column of board.columns) {
+      const task = column.tasks.find((t, idx) => `${idx}` === taskId);
+      if (task) return task;
+    }
+    return undefined;
+  }
+
+  public addTask(boardId: number, taskData: any): void {
+    console.log('Adding task to board', boardId, taskData);
+  }
+
+  public updateTask(boardId: number, taskId: string, taskData: any): void {
+    console.log('Updating task', taskId, 'in board', boardId, taskData);
   }
 }

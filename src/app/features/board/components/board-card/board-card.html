@@ -1,4 +1,4 @@
-<article class="card" role="article" tabindex="0">
+<article class="card" role="article" tabindex="0" (click)="onCardClick()" (keydown.enter)="onCardClick()">
   <h3 class="card__title">{{ card()?.title }}</h3>
   <div class="card__meta">
     <span class="card__subtasks"

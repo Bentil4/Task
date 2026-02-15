@@ -18,7 +18,7 @@ export class SelectComponent {
   value = input<string>('');
   required = input<boolean>(false);
   disabled = input<boolean>(false);
-  
+
   valueChange = output<string>();
 
   onValueChange(newValue: string) {

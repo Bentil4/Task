@@ -1,0 +1,105 @@
+.edit-task-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: white;
+  border-radius: 6px;
+  padding: 32px;
+  width: 480px;
+  max-width: 100%;
+}
+
+.form-title {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1;
+  color: #000112;
+  margin: 0 0 24px 0;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group:last-of-type {
+  margin-bottom: 24px;
+}
+
+.section-label {
+  display: block;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+  color: #828fa3;
+  margin-bottom: 8px;
+}
+
+.subtask-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  margin-bottom: 12px;
+}
+
+.subtask-row app-input {
+  flex: 1;
+}
+
+.remove-button {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s;
+}
+
+.remove-button:hover {
+  opacity: 0.7;
+}
+
+.remove-button svg {
+  display: block;
+}
+
+.add-subtask-button {
+  width: 100%;
+  padding: 8px;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 23px;
+  color: #635fc7;
+  background: rgba(99, 95, 199, 0.1);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-subtask-button:hover {
+  background: rgba(99, 95, 199, 0.25);
+}
+
+.submit-button {
+  width: 100%;
+  padding: 8px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 23px;
+  color: white;
+  background: #635fc7;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.submit-button:hover {
+  background: #a8a4ff;
+}

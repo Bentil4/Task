@@ -1,29 +1,26 @@
-import { Component, signal, output } from '@angular/core';
+import { Component, signal, output, input, effect } from '@angular/core';
 import { InputComponent } from '../../../../shared/components/input/input';
 import { TextareaComponent } from '../../../../shared/components/textarea/textarea';
 import { SelectComponent } from '../../../../shared/components/select/select';
-
 import type { SelectOption } from '../../../../shared/components/select/select';
+import type { ITask } from '../../../../core/models';
+import type { TaskFormData } from '../add-task-form/add-task-form';
 
 interface Subtask {
   id: number;
   title: string;
-}
-
-export interface TaskFormData {
-  title: string;
-  description: string;
-  subtasks: { title: string; isCompleted?: boolean }[];
-  status: string;
+  isCompleted: boolean;
 }
 
 @Component({
-  selector: 'app-add-task-form',
-  templateUrl: './add-task-form.html',
-  styleUrl: './add-task-form.css',
+  selector: 'app-edit-task-form',
+  templateUrl: './edit-task-form.html',
+  styleUrl: './edit-task-form.css',
   imports: [InputComponent, TextareaComponent, SelectComponent],
 })
-export class AddTaskFormComponent {
+export class EditTaskFormComponent {
+  task = input<ITask | null>(null);
+  
   title = signal('');
   description = signal('');
   subtasks = signal<Subtask[]>([]);
@@ -35,15 +32,33 @@ export class AddTaskFormComponent {
     { label: 'Done', value: 'done' },
   ]);
 
-  taskCreated = output<TaskFormData>();
+  taskUpdated = output<TaskFormData>();
   canceled = output<void>();
   
   private nextSubtaskId = 1;
 
+  constructor() {
+    effect(() => {
+      const taskData = this.task();
+      if (taskData) {
+        this.title.set(taskData.title);
+        this.description.set(taskData.description);
+        this.status.set(taskData.status.toLowerCase());
+        this.subtasks.set(
+          taskData.subtasks.map((subtask, idx) => ({
+            id: ++this.nextSubtaskId,
+            title: subtask.title,
+            isCompleted: subtask.isCompleted ?? false
+          }))
+        );
+      }
+    });
+  }
+
   addSubtask() {
     this.subtasks.update(subtasks => [
       ...subtasks,
-      { id: this.nextSubtaskId++, title: '' }
+      { id: ++this.nextSubtaskId, title: '', isCompleted: false }
     ]);
   }
 
@@ -67,11 +82,11 @@ export class AddTaskFormComponent {
       description: this.description(),
       subtasks: this.subtasks()
         .filter(subtask => subtask.title.trim())
-        .map(subtask => ({ title: subtask.title, isCompleted: false })),
+        .map(subtask => ({ title: subtask.title, isCompleted: subtask.isCompleted })),
       status: this.status(),
     };
     
-    this.taskCreated.emit(formData);
+    this.taskUpdated.emit(formData);
   }
 
   onCancel() {

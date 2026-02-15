@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, input, computed } from '@angular/core';
+import { Component, ChangeDetectionStrategy, input, computed, output } from '@angular/core';
 import { ITask } from '../../../../core/models';
 
 @Component({
@@ -9,6 +9,8 @@ import { ITask } from '../../../../core/models';
 })
 export class BoardCard {
   public readonly card = input<ITask | null>(null);
+  public readonly taskIndex = input<number>(0);
+  public readonly cardClick = output<number>();
 
   public readonly completedSubtasksCount = computed(() => {
     const cardData = this.card();
@@ -19,4 +21,8 @@ export class BoardCard {
     const cardData = this.card();
     return cardData?.subtasks?.length ?? 0;
   });
+
+  onCardClick(): void {
+    this.cardClick.emit(this.taskIndex());
+  }
 }
