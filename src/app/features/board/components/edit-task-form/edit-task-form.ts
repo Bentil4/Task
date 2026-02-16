@@ -29,6 +29,12 @@ export class EditTaskFormComponent {
   task = input<ITask | null>(null);
   boardId = input<number>(1);
   isSubmitting = input<boolean>(false);
+  
+  taskDeleted = output<void>();
+  
+  get isDirty(): boolean {
+    return this.form.dirty;
+  }
 
   private existingTitles = computed(() => {
     const board = this.boardService.getBoardDataByIndex(this.boardId() - 1);
@@ -146,5 +152,17 @@ export class EditTaskFormComponent {
 
   public onCancel() {
     this.canceled.emit();
+  }
+
+  public onDelete() {
+    this.taskDeleted.emit();
+  }
+
+  public toggleSubtaskCompletion(index: number) {
+    const subtask = this.subtasks.at(index);
+    if (subtask) {
+      const currentValue = subtask.get('isCompleted')?.value;
+      subtask.patchValue({ isCompleted: !currentValue });
+    }
   }
 }

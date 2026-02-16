@@ -10,10 +10,9 @@
             [cdkDropListData]="column.tasks"
             (cdkDropListDropped)="drop($event)"
           >
-            @for (task of column.tasks; track task.title; let idx = $index) {
+            @for (task of column.tasks; track task.id) {
               <app-board-card 
                 [card]="task" 
-                [taskIndex]="idx"
                 (cardClick)="onTaskClick($event)"
                 cdkDrag
               ></app-board-card>

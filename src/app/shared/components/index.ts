@@ -4,3 +4,4 @@ export * from './input/input';
 export * from './textarea/textarea';
 export * from './select/select';
 export * from './date-input/date-input';
+export * from './confirm-dialog/confirm-dialog';

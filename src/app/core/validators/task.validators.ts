@@ -24,8 +24,8 @@ export class TaskValidators {
       if (!control.value) return null;
       const title = control.value.trim().toLowerCase();
       const isDuplicate = existingTitles
-        .filter((title) => title.toLowerCase() !== currentTitle?.toLowerCase())
-        .some((title) => title.toLowerCase() === title);
+        .filter((existingTitle) => existingTitle.toLowerCase() !== currentTitle?.toLowerCase())
+        .some((existingTitle) => existingTitle.toLowerCase() === title);
       return isDuplicate ? { duplicate: true } : null;
     };
   }

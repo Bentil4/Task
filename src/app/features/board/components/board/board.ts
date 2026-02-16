@@ -101,8 +101,8 @@ export class Board implements OnInit {
     this.changeDetectorRef.markForCheck();
   }
 
-  public onTaskClick(taskIndex: number): void {
-    this.router.navigate(['/board', this.boardId(), 'edit', taskIndex]);
+  public onTaskClick(taskId: string): void {
+    this.router.navigate(['/board', this.boardId(), 'edit', taskId]);
   }
 
   ngOnInit(): void {

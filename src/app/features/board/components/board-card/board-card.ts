@@ -9,8 +9,7 @@ import { ITask } from '../../../../core/models';
 })
 export class BoardCard {
   public readonly card = input<ITask | null>(null);
-  public readonly taskIndex = input<number>(0);
-  public readonly cardClick = output<number>();
+  public readonly cardClick = output<string>();
 
   public readonly completedSubtasksCount = computed(() => {
     const cardData = this.card();
@@ -23,6 +22,9 @@ export class BoardCard {
   });
 
   onCardClick(): void {
-    this.cardClick.emit(this.taskIndex());
+    const taskId = this.card()?.id;
+    if (taskId) {
+      this.cardClick.emit(taskId);
+    }
   }
 }

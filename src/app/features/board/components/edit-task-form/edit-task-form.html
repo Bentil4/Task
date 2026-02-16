@@ -1,5 +1,22 @@
 <section class="edit-task-form">
-  <h2 class="form-title">Edit Task</h2>
+  <div class="form-header">
+    <h2 class="form-title">Edit Task</h2>
+    <button 
+      type="button" 
+      class="delete-button"
+      (click)="onDelete()"
+      [disabled]="isSubmitting()"
+      aria-label="Delete task"
+    >
+      <svg width="3" height="16" xmlns="http://www.w3.org/2000/svg">
+        <g fill="#828FA3" fill-rule="evenodd">
+          <circle cx="1.5" cy="1.5" r="1.5"/>
+          <circle cx="1.5" cy="8" r="1.5"/>
+          <circle cx="1.5" cy="14.5" r="1.5"/>
+        </g>
+      </svg>
+    </button>
+  </div>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-group">
@@ -64,6 +81,14 @@
 
       @for (control of subtasks.controls; track $index) {
         <div class="subtask-row">
+          <label class="subtask-checkbox">
+            <input 
+              type="checkbox" 
+              [checked]="control.value?.isCompleted"
+              (change)="toggleSubtaskCompletion($index)"
+            />
+            <span class="checkbox-custom"></span>
+          </label>
           <app-input
             placeholder="e.g. Make coffee"
             [value]="control.value?.title || ''"

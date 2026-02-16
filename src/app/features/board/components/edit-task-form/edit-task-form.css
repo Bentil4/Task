@@ -9,12 +9,39 @@
   max-width: 100%;
 }
 
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
 .form-title {
   font-weight: 700;
   font-size: 18px;
   line-height: 1;
   color: #000112;
-  margin: 0 0 24px 0;
+  margin: 0;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.delete-button:hover {
+  opacity: 0.7;
+}
+
+.delete-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 
 .form-group {
@@ -39,6 +66,50 @@
   gap: 16px;
   align-items: flex-end;
   margin-bottom: 12px;
+}
+
+.subtask-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-bottom: 8px;
+}
+
+.subtask-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkbox-custom {
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(130, 143, 163, 0.25);
+  border-radius: 2px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.subtask-checkbox input[type="checkbox"]:checked + .checkbox-custom {
+  background: #635fc7;
+  border-color: #635fc7;
+}
+
+.subtask-checkbox input[type="checkbox"]:checked + .checkbox-custom::after {
+  content: '';
+  width: 10px;
+  height: 6px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: rotate(-45deg) translateY(-1px);
+}
+
+.subtask-checkbox:hover .checkbox-custom {
+  border-color: #635fc7;
 }
 
 .subtask-row app-input {

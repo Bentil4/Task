@@ -18,7 +18,17 @@ export class BoardService {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      this.allBoardsData.set(data.boards ?? []);
+      const boardsWithIds = data.boards?.map((board: IBoard) => ({
+        ...board,
+        columns: board.columns?.map(column => ({
+          ...column,
+          tasks: column.tasks.map((task: any) => ({
+            ...task,
+            id: task.id || this.generateTaskId()
+          }))
+        }))
+      })) ?? [];
+      this.allBoardsData.set(boardsWithIds);
     } catch (error) {
       console.error('Failed to load boards:', error);
       this.allBoardsData.set([]);
@@ -42,30 +52,39 @@ export class BoardService {
     if (!board?.columns) return undefined;
 
     for (const column of board.columns) {
-      const task = column.tasks.find((t, idx) => `${idx}` === taskId);
+      const task = column.tasks.find((t) => t.id === taskId);
       if (task) return task;
     }
     return undefined;
   }
 
-  public addTask(boardId: number, taskData: ITask): boolean {
+  public addTask(boardId: number, taskData: Partial<ITask>): boolean {
     const boards = this.allBoardsData();
     const board = boards[boardId - 1];
 
     if (!board?.columns) return false;
 
     const statusColumn = board.columns.find(
-      (column) => column.name.toLowerCase() === taskData.status.toLowerCase(),
+      (column) => column.name.toLowerCase() === taskData.status?.toLowerCase(),
     );
 
     if (!statusColumn) return false;
 
-    statusColumn.tasks.push(taskData);
+    const newTask: ITask = {
+      id: this.generateTaskId(),
+      title: taskData.title || '',
+      description: taskData.description || '',
+      status: taskData.status || '',
+      dueDate: taskData.dueDate,
+      subtasks: taskData.subtasks || []
+    };
+
+    statusColumn.tasks.push(newTask);
     this.allBoardsData.set([...boards]);
     return true;
   }
 
-  public updateTask(boardId: number, taskId: string, taskData: ITask): boolean {
+  public updateTask(boardId: number, taskId: string, taskData: Partial<ITask>): boolean {
     const boards = this.allBoardsData();
     const board = boards[boardId - 1];
 
@@ -76,7 +95,7 @@ export class BoardService {
     let taskIndex = -1;
 
     for (const column of board.columns) {
-      const idx = column.tasks.findIndex((task, idx) => `${idx}` === taskId);
+      const idx = column.tasks.findIndex((task) => task.id === taskId);
       if (idx !== -1) {
         oldColumn = column;
         taskIndex = idx;
@@ -87,21 +106,50 @@ export class BoardService {
 
     if (!taskFound || !oldColumn) return false;
 
+    const existingTask = oldColumn.tasks[taskIndex];
+    const updatedTask: ITask = {
+      ...existingTask,
+      ...taskData,
+      id: existingTask.id
+    };
+
     const newColumn = board.columns.find(
-      (column) => column.name.toLowerCase() === taskData.status.toLowerCase(),
+      (column) => column.name.toLowerCase() === updatedTask.status.toLowerCase(),
     );
 
     if (!newColumn) return false;
 
     oldColumn.tasks.splice(taskIndex, 1);
 
-    if (oldColumn.name.toLowerCase() === taskData.status.toLowerCase()) {
-      oldColumn.tasks.splice(taskIndex, 0, taskData);
+    if (oldColumn.name.toLowerCase() === updatedTask.status.toLowerCase()) {
+      oldColumn.tasks.splice(taskIndex, 0, updatedTask);
     } else {
-      newColumn.tasks.push(taskData);
+      newColumn.tasks.push(updatedTask);
     }
 
     this.allBoardsData.set([...boards]);
     return true;
+  }
+
+  public deleteTask(boardId: number, taskId: string): boolean {
+    const boards = this.allBoardsData();
+    const board = boards[boardId - 1];
+
+    if (!board?.columns) return false;
+
+    for (const column of board.columns) {
+      const taskIndex = column.tasks.findIndex((task) => task.id === taskId);
+      if (taskIndex !== -1) {
+        column.tasks.splice(taskIndex, 1);
+        this.allBoardsData.set([...boards]);
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  private generateTaskId(): string {
+    return `task-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 }

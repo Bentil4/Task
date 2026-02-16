@@ -1,6 +1,7 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditTaskFormComponent } from '../../components/edit-task-form/edit-task-form';
+import { ConfirmDialogComponent } from '../../../../shared/components';
 import type { TaskFormData } from '../../components/add-task-form/add-task-form';
 import { BoardService, NotificationService } from '../../../../core/services';
 import type { ITask } from '../../../../core/models';
@@ -11,7 +12,7 @@ import { map } from 'rxjs/operators';
   selector: 'app-edit-task-page',
   templateUrl: './edit-task-page.html',
   styleUrl: './edit-task-page.css',
-  imports: [EditTaskFormComponent],
+  imports: [EditTaskFormComponent, ConfirmDialogComponent],
 })
 export class EditTaskPage implements OnInit {
   private router = inject(Router);
@@ -21,6 +22,7 @@ export class EditTaskPage implements OnInit {
 
   task = signal<ITask | null>(null);
   isSubmitting = signal(false);
+  showDeleteConfirm = signal(false);
 
   boardId = toSignal(
     this.route.paramMap.pipe(map((params) => Number(params.get('id')) || 1)),
@@ -77,8 +79,41 @@ export class EditTaskPage implements OnInit {
     }
   }
 
-  public onCancel(): void {
+  onCancel(): void {
     this.navigateToBoard();
+  }
+
+  onDeleteRequest(): void {
+    this.showDeleteConfirm.set(true);
+  }
+
+  onDeleteConfirm(): void {
+    if (this.isSubmitting()) return;
+    
+    this.isSubmitting.set(true);
+    const boardId = this.boardId();
+    const taskId = this.route.snapshot.paramMap.get('taskId');
+    
+    if (!taskId) {
+      this.notificationService.error('Invalid task ID');
+      this.isSubmitting.set(false);
+      return;
+    }
+    
+    const success = this.boardService.deleteTask(boardId, taskId);
+    
+    if (success) {
+      this.notificationService.success('Task deleted successfully');
+      this.navigateToBoard();
+    } else {
+      this.notificationService.error('Failed to delete task');
+      this.isSubmitting.set(false);
+      this.showDeleteConfirm.set(false);
+    }
+  }
+
+  onDeleteCancel(): void {
+    this.showDeleteConfirm.set(false);
   }
 
   private navigateToBoard(): void {
