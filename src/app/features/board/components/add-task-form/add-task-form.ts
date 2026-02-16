@@ -1,4 +1,4 @@
-import { Component, output, inject, input, computed } from '@angular/core';
+import { Component, output, inject, input, computed, HostListener } from '@angular/core';
 import { FormBuilder, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputComponent } from '../../../../shared/components/input/input';
 import { TextareaComponent } from '../../../../shared/components/textarea/textarea';
@@ -63,6 +63,19 @@ export class AddTaskFormComponent {
   constructor() {
     this.form.get('title')?.addValidators(TaskValidators.duplicateTitle(this.existingTitles()));
   }
+  
+  @HostListener('document:keydown.escape')
+  onEscapeKey() {
+    this.onCancel();
+  }
+  
+  @HostListener('document:keydown.control.enter')
+  @HostListener('document:keydown.meta.enter')
+  onSubmitShortcut() {
+    if (!this.form.invalid && !this.isSubmitting()) {
+      this.onSubmit();
+    }
+  }
 
   public statusOptions = computed<SelectOption[]>(() => {
     const board = this.boardService.getBoardDataByIndex(this.boardId() - 1);
@@ -91,6 +104,23 @@ export class AddTaskFormComponent {
 
   public removeSubtask(index: number) {
     this.subtasks.removeAt(index);
+  }
+  
+  getErrorMessage(field: string): string {
+    const control = this.form.get(field);
+    if (!control?.errors || !control.touched) return '';
+    
+    const errors = control.errors;
+    const value = control.value || '';
+    
+    if (errors['required']) return `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
+    if (errors['whitespace']) return 'Cannot be empty or whitespace';
+    if (errors['minlength']) return `Must be at least ${errors['minlength'].requiredLength} characters (${value.length}/${errors['minlength'].requiredLength})`;
+    if (errors['maxlength']) return `Must be less than ${errors['maxlength'].requiredLength} characters (${value.length}/${errors['maxlength'].requiredLength})`;
+    if (errors['duplicate']) return 'A task with this title already exists';
+    if (errors['pastDate']) return 'Due date cannot be in the past';
+    
+    return '';
   }
 
   onSubmit() {

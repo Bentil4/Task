@@ -1,2 +1,12 @@
 <router-outlet />
 <app-notification />
+@if (dialogService.config()) {
+  <app-confirm-dialog
+    [title]="dialogService.config()!.title"
+    [message]="dialogService.config()!.message"
+    [confirmText]="dialogService.config()!.confirmText || 'Confirm'"
+    [cancelText]="dialogService.config()!.cancelText || 'Cancel'"
+    (confirmed)="dialogService.handleConfirm()"
+    (canceled)="dialogService.handleCancel()"
+  />
+}

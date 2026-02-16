@@ -1,9 +1,9 @@
-<section class="dialog-overlay" (click)="onCancel()">
+<section class="dialog-overlay" (click)="onCancel()" role="dialog" aria-modal="true" [attr.aria-labelledby]="'dialog-title'">
   <div class="dialog-content" (click)="$event.stopPropagation()">
-    <h2 class="dialog-title">{{ title() }}</h2>
+    <h2 id="dialog-title" class="dialog-title">{{ title() }}</h2>
     <p class="dialog-message">{{ message() }}</p>
     <div class="dialog-actions">
-      <button type="button" class="btn-delete" (click)="onConfirm()">
+      <button #confirmButton type="button" class="btn-delete" (click)="onConfirm()">
         {{ confirmText() }}
       </button>
       <button type="button" class="btn-cancel" (click)="onCancel()">

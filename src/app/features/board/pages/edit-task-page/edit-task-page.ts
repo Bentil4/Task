@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { EditTaskFormComponent } from '../../components/edit-task-form/edit-task-form';
 import { ConfirmDialogComponent } from '../../../../shared/components';
 import type { TaskFormData } from '../../components/add-task-form/add-task-form';
-import { BoardService, NotificationService } from '../../../../core/services';
+import { BoardService, NotificationService, DialogService } from '../../../../core/services';
 import { HasUnsavedChanges } from '../../../../core/guards';
 import type { ITask } from '../../../../core/models';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -20,6 +20,7 @@ export class EditTaskPage implements OnInit, HasUnsavedChanges {
   private route = inject(ActivatedRoute);
   private boardService = inject(BoardService);
   private notificationService = inject(NotificationService);
+  private dialogService = inject(DialogService);
 
   @ViewChild(EditTaskFormComponent) formComponent?: EditTaskFormComponent;
 
@@ -82,7 +83,18 @@ export class EditTaskPage implements OnInit, HasUnsavedChanges {
     }
   }
 
-  onCancel(): void {
+  async onCancel(): Promise<void> {
+    if (this.formComponent?.isDirty) {
+      const confirmed = await this.dialogService.confirm({
+        title: 'Discard Changes',
+        message: 'You have unsaved changes. Are you sure you want to discard them?',
+        confirmText: 'Discard',
+        cancelText: 'Keep Editing',
+      });
+      
+      if (!confirmed) return;
+    }
+    
     this.navigateToBoard();
   }
 

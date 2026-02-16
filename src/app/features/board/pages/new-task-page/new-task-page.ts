@@ -1,8 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AddTaskFormComponent } from '../../components/add-task-form/add-task-form';
 import type { TaskFormData } from '../../components/add-task-form/add-task-form';
-import { BoardService, NotificationService } from '../../../../core/services';
+import { BoardService, NotificationService, DialogService } from '../../../../core/services';
 import { HasUnsavedChanges } from '../../../../core/guards';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
@@ -18,6 +18,9 @@ export class NewTaskPage implements HasUnsavedChanges {
   private route = inject(ActivatedRoute);
   private boardService = inject(BoardService);
   private notificationService = inject(NotificationService);
+  private dialogService = inject(DialogService);
+
+  @ViewChild(AddTaskFormComponent) formComponent?: AddTaskFormComponent;
 
   isSubmitting = signal(false);
 
@@ -54,12 +57,21 @@ export class NewTaskPage implements HasUnsavedChanges {
     }
   }
 
-  onCancel(): void {
-    this.navigateToBoard();
+  async onCancel(): Promise<void> {
+    const confirmed = await this.dialogService.confirm({
+      title: 'Cancel Task Creation',
+      message: 'Are you sure you want to cancel? Any entered data will be lost.',
+      confirmText: 'Yes, Cancel',
+      cancelText: 'No, Continue',
+    });
+    
+    if (confirmed) {
+      this.navigateToBoard();
+    }
   }
 
   hasUnsavedChanges(): boolean {
-    return false;
+    return (this.formComponent?.form.dirty ?? false) && !this.isSubmitting();
   }
 
   navigateToBoard(): void {

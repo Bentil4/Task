@@ -24,28 +24,11 @@
         label="Title *"
         placeholder="e.g. Take coffee break"
         [value]="form.get('title')?.value || ''"
-        (valueChange)="form.get('title')?.setValue($event); form.get('title')?.markAsTouched()"
+        (valueChange)="form.get('title')?.setValue($event, {emitEvent: false}); form.get('title')?.markAsTouched(); form.get('title')?.markAsDirty()"
         [required]="true"
+        [autoFocus]="true"
+        [error]="getErrorMessage('title')"
       />
-      @if (form.get('title')?.invalid && form.get('title')?.touched) {
-        <span class="error-message">
-          @if (form.get('title')?.errors?.['required']) {
-            Title is required
-          }
-          @if (form.get('title')?.errors?.['whitespace']) {
-            Title cannot be empty or whitespace
-          }
-          @if (form.get('title')?.errors?.['minlength']) {
-            Title must be at least 3 characters
-          }
-          @if (form.get('title')?.errors?.['maxlength']) {
-            Title must be less than 100 characters
-          }
-          @if (form.get('title')?.errors?.['duplicate']) {
-            A task with this title already exists
-          }
-        </span>
-      }
     </div>
 
     <div class="form-group">
@@ -54,10 +37,10 @@
         placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
         [value]="form.get('description')?.value || ''"
         [rows]="4"
-        (valueChange)="form.get('description')?.setValue($event); form.get('description')?.markAsTouched()"
+        (valueChange)="form.get('description')?.setValue($event, {emitEvent: false}); form.get('description')?.markAsTouched(); form.get('description')?.markAsDirty()"
       />
       @if (form.get('description')?.invalid && form.get('description')?.touched) {
-        <span class="error-message">Description must be less than 500 characters</span>
+        <span class="error-message" role="alert" aria-live="polite">{{ getErrorMessage('description') }}</span>
       }
     </div>
 
@@ -65,14 +48,10 @@
       <app-date-input
         label="Due Date"
         [value]="form.get('dueDate')?.value || ''"
-        (valueChange)="form.get('dueDate')?.setValue($event); form.get('dueDate')?.markAsTouched()"
+        (valueChange)="form.get('dueDate')?.setValue($event, {emitEvent: false}); form.get('dueDate')?.markAsTouched(); form.get('dueDate')?.markAsDirty()"
       />
       @if (form.get('dueDate')?.invalid && form.get('dueDate')?.touched) {
-        <span class="error-message">
-          @if (form.get('dueDate')?.errors?.['pastDate']) {
-            Due date cannot be in the past
-          }
-        </span>
+        <span class="error-message" role="alert" aria-live="polite">{{ getErrorMessage('dueDate') }}</span>
       }
     </div>
 
@@ -92,7 +71,7 @@
           <app-input
             placeholder="e.g. Make coffee"
             [value]="control.value?.title || ''"
-            (valueChange)="control.patchValue({ title: $event })"
+            (valueChange)="control.patchValue({ title: $event }); control.markAsDirty()"
           />
           <button
             type="button"
@@ -120,11 +99,9 @@
         label="Status *"
         [options]="statusOptions()"
         [value]="form.get('status')?.value || ''"
-        (valueChange)="form.get('status')?.setValue($event); form.get('status')?.markAsTouched()"
+        (valueChange)="form.get('status')?.setValue($event, {emitEvent: false}); form.get('status')?.markAsTouched(); form.get('status')?.markAsDirty()"
+        [error]="getErrorMessage('status')"
       />
-      @if (form.get('status')?.invalid && form.get('status')?.touched) {
-        <span class="error-message">Status is required</span>
-      }
     </div>
 
     <button type="submit" class="submit-button" [disabled]="isSubmitting() || form.invalid">
