@@ -26,8 +26,9 @@ export class EditTaskFormComponent {
   private fb = inject(FormBuilder);
   private boardService = inject(BoardService);
 
-  public task = input<ITask | null>(null);
-  public boardId = input<number>(1);
+  task = input<ITask | null>(null);
+  boardId = input<number>(1);
+  isSubmitting = input<boolean>(false);
 
   private existingTitles = computed(() => {
     const board = this.boardService.getBoardDataByIndex(this.boardId() - 1);

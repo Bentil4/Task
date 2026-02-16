@@ -2,7 +2,7 @@ import { Component, inject, signal, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditTaskFormComponent } from '../../components/edit-task-form/edit-task-form';
 import type { TaskFormData } from '../../components/add-task-form/add-task-form';
-import { BoardService } from '../../../../core/services';
+import { BoardService, NotificationService } from '../../../../core/services';
 import type { ITask } from '../../../../core/models';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
@@ -17,10 +17,12 @@ export class EditTaskPage implements OnInit {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private boardService = inject(BoardService);
+  private notificationService = inject(NotificationService);
 
-  public task = signal<ITask | null>(null);
+  task = signal<ITask | null>(null);
+  isSubmitting = signal(false);
 
-  public boardId = toSignal(
+  boardId = toSignal(
     this.route.paramMap.pipe(map((params) => Number(params.get('id')) || 1)),
     { initialValue: 1 },
   );
@@ -34,16 +36,45 @@ export class EditTaskPage implements OnInit {
       if (task) {
         this.task.set(task);
       } else {
+        this.notificationService.error('Task not found');
         this.navigateToBoard();
       }
     }
   }
 
-  public onTaskUpdated(taskData: TaskFormData): void {
-    const boardId = this.route.snapshot.paramMap.get('id');
+  onTaskUpdated(taskData: TaskFormData): void {
+    if (this.isSubmitting()) return;
+    
+    this.isSubmitting.set(true);
+    const boardId = this.boardId();
     const taskId = this.route.snapshot.paramMap.get('taskId');
-    console.log('Task updated:', taskData, 'for board:', boardId, 'task:', taskId);
-    this.navigateToBoard();
+    
+    if (!taskId) {
+      this.notificationService.error('Invalid task ID');
+      this.isSubmitting.set(false);
+      return;
+    }
+    
+    const task = {
+      title: taskData.title,
+      description: taskData.description,
+      status: taskData.status,
+      dueDate: taskData.dueDate,
+      subtasks: taskData.subtasks.map(st => ({
+        title: st.title,
+        isCompleted: st.isCompleted || false
+      }))
+    };
+    
+    const success = this.boardService.updateTask(boardId, taskId, task);
+    
+    if (success) {
+      this.notificationService.success('Task updated successfully');
+      this.navigateToBoard();
+    } else {
+      this.notificationService.error('Failed to update task');
+      this.isSubmitting.set(false);
+    }
   }
 
   public onCancel(): void {

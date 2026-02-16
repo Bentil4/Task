@@ -2,6 +2,7 @@
   <div class="page-content">
     <app-add-task-form
       [boardId]="boardId()"
+      [isSubmitting]="isSubmitting()"
       (taskCreated)="onTaskCreated($event)"
       (canceled)="onCancel()"
     />

@@ -4,6 +4,7 @@
       <app-edit-task-form
         [task]="task()"
         [boardId]="boardId()"
+        [isSubmitting]="isSubmitting()"
         (taskUpdated)="onTaskUpdated($event)"
         (canceled)="onCancel()"
       />

@@ -1,8 +1,8 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { AddTaskFormComponent } from '../../components/add-task-form/add-task-form';
 import type { TaskFormData } from '../../components/add-task-form/add-task-form';
-import { BoardService } from '../../../../core/services';
+import { BoardService, NotificationService } from '../../../../core/services';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
 
@@ -16,17 +16,41 @@ export class NewTaskPage {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private boardService = inject(BoardService);
+  private notificationService = inject(NotificationService);
 
-  public boardId = toSignal(
+  isSubmitting = signal(false);
+
+  boardId = toSignal(
     this.route.paramMap.pipe(map(params => Number(params.get('id')) || 1)),
     { initialValue: 1 }
   );
 
-  public onTaskCreated(taskData: TaskFormData): void {
-    const boardId = this.route.snapshot.paramMap.get('id');
-    console.log('Task created:', taskData, 'for board:', boardId);
+  onTaskCreated(taskData: TaskFormData): void {
+    if (this.isSubmitting()) return;
     
-    this.navigateToBoard();
+    this.isSubmitting.set(true);
+    const boardId = this.boardId();
+    
+    const task = {
+      title: taskData.title,
+      description: taskData.description,
+      status: taskData.status,
+      dueDate: taskData.dueDate,
+      subtasks: taskData.subtasks.map(st => ({
+        title: st.title,
+        isCompleted: st.isCompleted || false
+      }))
+    };
+    
+    const success = this.boardService.addTask(boardId, task);
+    
+    if (success) {
+      this.notificationService.success('Task created successfully');
+      this.navigateToBoard();
+    } else {
+      this.notificationService.error('Failed to create task');
+      this.isSubmitting.set(false);
+    }
   }
 
   public onCancel(): void {

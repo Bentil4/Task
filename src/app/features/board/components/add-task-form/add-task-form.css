@@ -104,6 +104,11 @@
   background: #a8a4ff;
 }
 
+.submit-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .error-message {
   display: block;
   font-size: 11px;

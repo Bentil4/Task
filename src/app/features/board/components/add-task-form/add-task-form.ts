@@ -32,7 +32,8 @@ export class AddTaskFormComponent {
   private formbuilder = inject(FormBuilder);
   private boardService = inject(BoardService);
 
-  public boardId = input<number>(1);
+  boardId = input<number>(1);
+  isSubmitting = input<boolean>(false);
 
   private existingTitles = computed(() => {
     const board = this.boardService.getBoardDataByIndex(this.boardId() - 1);
@@ -92,7 +93,7 @@ export class AddTaskFormComponent {
     this.subtasks.removeAt(index);
   }
 
-  public onSubmit() {
+  onSubmit() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -111,6 +112,12 @@ export class AddTaskFormComponent {
     };
 
     this.taskCreated.emit(formData);
+    this.resetForm();
+  }
+
+  resetForm(): void {
+    this.form.reset();
+    this.subtasks.clear();
   }
 
   public onCancel() {

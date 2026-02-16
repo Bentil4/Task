@@ -3,7 +3,7 @@ import { IBoard, ITask } from '../models/board.model';
 import { BOARDS, DATA_URL } from '../constants/app.constants';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class BoardService {
   public readonly boards = signal<IBoard[]>(BOARDS);
@@ -28,7 +28,7 @@ export class BoardService {
   }
 
   public getBoardById(id: number): IBoard | undefined {
-    return this.boards().find(board => board.id === id);
+    return this.boards().find((board) => board.id === id);
   }
 
   public getBoardDataByIndex(index: number): IBoard | undefined {
@@ -40,7 +40,7 @@ export class BoardService {
   public getTaskById(boardId: number, taskId: string): ITask | undefined {
     const board = this.getBoardDataByIndex(boardId - 1);
     if (!board?.columns) return undefined;
-    
+
     for (const column of board.columns) {
       const task = column.tasks.find((t, idx) => `${idx}` === taskId);
       if (task) return task;
@@ -48,11 +48,60 @@ export class BoardService {
     return undefined;
   }
 
-  public addTask(boardId: number, taskData: any): void {
-    console.log('Adding task to board', boardId, taskData);
+  public addTask(boardId: number, taskData: ITask): boolean {
+    const boards = this.allBoardsData();
+    const board = boards[boardId - 1];
+
+    if (!board?.columns) return false;
+
+    const statusColumn = board.columns.find(
+      (column) => column.name.toLowerCase() === taskData.status.toLowerCase(),
+    );
+
+    if (!statusColumn) return false;
+
+    statusColumn.tasks.push(taskData);
+    this.allBoardsData.set([...boards]);
+    return true;
   }
 
-  public updateTask(boardId: number, taskId: string, taskData: any): void {
-    console.log('Updating task', taskId, 'in board', boardId, taskData);
+  public updateTask(boardId: number, taskId: string, taskData: ITask): boolean {
+    const boards = this.allBoardsData();
+    const board = boards[boardId - 1];
+
+    if (!board?.columns) return false;
+
+    let taskFound = false;
+    let oldColumn: any = null;
+    let taskIndex = -1;
+
+    for (const column of board.columns) {
+      const idx = column.tasks.findIndex((task, idx) => `${idx}` === taskId);
+      if (idx !== -1) {
+        oldColumn = column;
+        taskIndex = idx;
+        taskFound = true;
+        break;
+      }
+    }
+
+    if (!taskFound || !oldColumn) return false;
+
+    const newColumn = board.columns.find(
+      (column) => column.name.toLowerCase() === taskData.status.toLowerCase(),
+    );
+
+    if (!newColumn) return false;
+
+    oldColumn.tasks.splice(taskIndex, 1);
+
+    if (oldColumn.name.toLowerCase() === taskData.status.toLowerCase()) {
+      oldColumn.tasks.splice(taskIndex, 0, taskData);
+    } else {
+      newColumn.tasks.push(taskData);
+    }
+
+    this.allBoardsData.set([...boards]);
+    return true;
   }
 }
