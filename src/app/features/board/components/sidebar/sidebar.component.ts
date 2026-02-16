@@ -32,11 +32,9 @@ export class SidebarComponent implements OnInit {
   public readonly boards = this.boardService.boards;
 
   ngOnInit(): void {
-    // Theme is already applied in ThemeService constructor
   }
 
   public onCreateNewBoard(): void {
-    // TODO: Implement board creation logic
   }
 
   public onThemeToggle(event: Event): void {
