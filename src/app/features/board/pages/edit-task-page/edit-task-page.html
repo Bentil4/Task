@@ -1,5 +1,8 @@
 <div class="page-overlay">
   <div class="page-content">
+    <nav class="breadcrumb">
+      <a class="breadcrumb-link" (click)="navigateToBoard()">← Back to Board</a>
+    </nav>
     @if (task()) {
       <app-edit-task-form
         [task]="task()"

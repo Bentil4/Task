@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AddTaskFormComponent } from '../../components/add-task-form/add-task-form';
 import type { TaskFormData } from '../../components/add-task-form/add-task-form';
 import { BoardService, NotificationService } from '../../../../core/services';
+import { HasUnsavedChanges } from '../../../../core/guards';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
 
@@ -12,7 +13,7 @@ import { map } from 'rxjs/operators';
   styleUrl: './new-task-page.css',
   imports: [AddTaskFormComponent],
 })
-export class NewTaskPage {
+export class NewTaskPage implements HasUnsavedChanges {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private boardService = inject(BoardService);
@@ -53,12 +54,17 @@ export class NewTaskPage {
     }
   }
 
-  public onCancel(): void {
+  onCancel(): void {
     this.navigateToBoard();
   }
 
-  private navigateToBoard(): void {
+  hasUnsavedChanges(): boolean {
+    return false;
+  }
+
+  navigateToBoard(): void {
     const boardId = this.route.snapshot.paramMap.get('id') || '1';
-    this.router.navigate(['/board', boardId]);
+    const queryParams = this.route.snapshot.queryParams;
+    this.router.navigate(['/board', boardId], { queryParams });
   }
 }

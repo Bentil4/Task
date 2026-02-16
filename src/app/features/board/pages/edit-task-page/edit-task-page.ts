@@ -1,9 +1,10 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EditTaskFormComponent } from '../../components/edit-task-form/edit-task-form';
 import { ConfirmDialogComponent } from '../../../../shared/components';
 import type { TaskFormData } from '../../components/add-task-form/add-task-form';
 import { BoardService, NotificationService } from '../../../../core/services';
+import { HasUnsavedChanges } from '../../../../core/guards';
 import type { ITask } from '../../../../core/models';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
@@ -14,11 +15,13 @@ import { map } from 'rxjs/operators';
   styleUrl: './edit-task-page.css',
   imports: [EditTaskFormComponent, ConfirmDialogComponent],
 })
-export class EditTaskPage implements OnInit {
+export class EditTaskPage implements OnInit, HasUnsavedChanges {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private boardService = inject(BoardService);
   private notificationService = inject(NotificationService);
+
+  @ViewChild(EditTaskFormComponent) formComponent?: EditTaskFormComponent;
 
   task = signal<ITask | null>(null);
   isSubmitting = signal(false);
@@ -39,7 +42,7 @@ export class EditTaskPage implements OnInit {
         this.task.set(task);
       } else {
         this.notificationService.error('Task not found');
-        this.navigateToBoard();
+        this.navigateToBoard(true);
       }
     }
   }
@@ -116,8 +119,13 @@ export class EditTaskPage implements OnInit {
     this.showDeleteConfirm.set(false);
   }
 
-  private navigateToBoard(): void {
+  hasUnsavedChanges(): boolean {
+    return (this.formComponent?.isDirty ?? false) && !this.isSubmitting();
+  }
+
+  navigateToBoard(replaceUrl = false): void {
     const boardId = this.route.snapshot.paramMap.get('id') || '1';
-    this.router.navigate(['/board', boardId]);
+    const queryParams = this.route.snapshot.queryParams;
+    this.router.navigate(['/board', boardId], { queryParams, replaceUrl });
   }
 }
