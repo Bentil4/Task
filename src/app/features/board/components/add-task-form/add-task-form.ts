@@ -5,6 +5,7 @@ import { TextareaComponent } from '../../../../shared/components/textarea/textar
 import { SelectComponent } from '../../../../shared/components/select/select';
 import { DateInputComponent } from '../../../../shared/components/date-input/date-input';
 import { BoardService } from '../../../../core/services';
+import { TaskValidators } from '../../../../core/validators';
 import type { SelectOption } from '../../../../shared/components/select/select';
 
 export interface TaskFormData {
@@ -31,15 +32,36 @@ export class AddTaskFormComponent {
   private formbuilder = inject(FormBuilder);
   private boardService = inject(BoardService);
 
-  boardId = input<number>(1);
+  public boardId = input<number>(1);
+
+  private existingTitles = computed(() => {
+    const board = this.boardService.getBoardDataByIndex(this.boardId() - 1);
+    const titles: string[] = [];
+    board?.columns?.forEach((col) => {
+      col.tasks.forEach((task) => titles.push(task.title));
+    });
+    return titles;
+  });
 
   form = this.formbuilder.group({
-    title: ['', [Validators.required, Validators.maxLength(100)]],
+    title: [
+      '',
+      [
+        Validators.required,
+        Validators.maxLength(100),
+        TaskValidators.noWhitespace(),
+        TaskValidators.minLength(3),
+      ],
+    ],
     description: ['', Validators.maxLength(500)],
-    dueDate: [''],
+    dueDate: ['', TaskValidators.futureDate()],
     status: ['', Validators.required],
     subtasks: this.formbuilder.array<any>([]),
   });
+
+  constructor() {
+    this.form.get('title')?.addValidators(TaskValidators.duplicateTitle(this.existingTitles()));
+  }
 
   public statusOptions = computed<SelectOption[]>(() => {
     const board = this.boardService.getBoardDataByIndex(this.boardId() - 1);

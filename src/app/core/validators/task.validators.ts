@@ -1,7 +1,7 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 export class TaskValidators {
-  static noWhitespace(): ValidatorFn {
+  public static noWhitespace(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control.value) return null;
       const isWhitespace = (control.value || '').trim().length === 0;
@@ -9,7 +9,7 @@ export class TaskValidators {
     };
   }
 
-  static minLength(min: number): ValidatorFn {
+  public static minLength(min: number): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control.value) return null;
       const trimmed = (control.value || '').trim();
@@ -19,7 +19,7 @@ export class TaskValidators {
     };
   }
 
-  static duplicateTitle(existingTitles: string[], currentTitle?: string): ValidatorFn {
+  public static duplicateTitle(existingTitles: string[], currentTitle?: string): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control.value) return null;
       const title = control.value.trim().toLowerCase();
@@ -30,7 +30,7 @@ export class TaskValidators {
     };
   }
 
-  static futureDate(): ValidatorFn {
+  public static futureDate(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       if (!control.value) return null;
       const selectedDate = new Date(control.value);
