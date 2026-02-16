@@ -41,6 +41,7 @@ export class Board implements OnInit {
       const id = this.boardId();
       const filter = this.filterStatus();
       const sort = this.sortBy();
+      this.boardService.allBoardsData();
 
       this.loadBoardData(id, filter, sort);
     });
@@ -52,8 +53,8 @@ export class Board implements OnInit {
 
     const columns =
       boardData.columns?.map((column: IColumn) => ({
-        ...column,
-        tasks: this.filterAndSortTasks(column.tasks, filterStatus, sortBy),
+        name: column.name,
+        tasks: this.filterAndSortTasks([...column.tasks], filterStatus, sortBy),
       })) ?? [];
 
     this.columns = columns;

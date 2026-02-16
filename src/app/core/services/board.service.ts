@@ -1,11 +1,15 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
 import { IBoard, ITask } from '../models/board.model';
 import { BOARDS, DATA_URL } from '../constants/app.constants';
+import { StorageService } from './storage.service';
+
+const STORAGE_KEY = 'kanban_boards_data';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BoardService {
+  private storageService = inject(StorageService);
   public readonly boards = signal<IBoard[]>(BOARDS);
   public readonly allBoardsData = signal<IBoard[]>([]);
   public readonly isLoading = signal<boolean>(false);
@@ -13,6 +17,13 @@ export class BoardService {
   public async loadBoardsData(): Promise<void> {
     this.isLoading.set(true);
     try {
+      const cached = this.storageService.getItem(STORAGE_KEY);
+      if (cached) {
+        this.allBoardsData.set(JSON.parse(cached));
+        this.isLoading.set(false);
+        return;
+      }
+
       const response = await fetch(DATA_URL);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -29,6 +40,7 @@ export class BoardService {
         }))
       })) ?? [];
       this.allBoardsData.set(boardsWithIds);
+      this.saveToStorage();
     } catch (error) {
       console.error('Failed to load boards:', error);
       this.allBoardsData.set([]);
@@ -81,6 +93,7 @@ export class BoardService {
 
     statusColumn.tasks.push(newTask);
     this.allBoardsData.set([...boards]);
+    this.saveToStorage();
     return true;
   }
 
@@ -128,6 +141,7 @@ export class BoardService {
     }
 
     this.allBoardsData.set([...boards]);
+    this.saveToStorage();
     return true;
   }
 
@@ -142,6 +156,7 @@ export class BoardService {
       if (taskIndex !== -1) {
         column.tasks.splice(taskIndex, 1);
         this.allBoardsData.set([...boards]);
+        this.saveToStorage();
         return true;
       }
     }
@@ -151,5 +166,13 @@ export class BoardService {
 
   private generateTaskId(): string {
     return `task-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  }
+
+  private saveToStorage(): void {
+    try {
+      this.storageService.setItem(STORAGE_KEY, JSON.stringify(this.allBoardsData()));
+    } catch (error) {
+      console.error('Failed to save boards to storage:', error);
+    }
   }
 }
