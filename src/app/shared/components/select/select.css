@@ -4,7 +4,7 @@
   font-weight: 700;
   font-size: 12px;
   line-height: 1;
-  color: #828fa3;
+  color: var(--color-medium-gray);
   margin-bottom: 8px;
 }
 
@@ -19,8 +19,9 @@
   font-weight: 500;
   font-size: 13px;
   line-height: 23px;
-  color: #000112;
-  background: white;
+  color: var(--color-medium-gray);
+  background: transparent;
+  opacity: 0.5;
   border: 1px solid rgba(130, 143, 163, 0.25);
   border-radius: 4px;
   outline: none;
@@ -45,4 +46,12 @@
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
+}
+
+.error-message {
+  display: block;
+  font-size: 11px;
+  color: var(--color-red);
+  margin-top: 4px;
+  font-weight: 500;
 }

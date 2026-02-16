@@ -1,5 +1,4 @@
 import { Injectable, signal, Component } from '@angular/core';
-import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog';
 
 export interface DialogConfig {
   title: string;

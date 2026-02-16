@@ -3,7 +3,7 @@
   font-weight: 700;
   font-size: 12px;
   line-height: 1;
-  color: #828fa3;
+  color: var(--color-medium-gray);
   margin-bottom: 8px;
 }
 
@@ -13,8 +13,8 @@
   font-weight: 500;
   font-size: 13px;
   line-height: 23px;
-  color: #000112;
-  background: white;
+  color: var(--color-black);
+  background: transparent;
   border: 1px solid rgba(130, 143, 163, 0.25);
   border-radius: 4px;
   outline: none;
@@ -25,8 +25,8 @@
 }
 
 .textarea-field::placeholder {
-  color: #000112;
-  opacity: 0.25;
+  color: var(--color-medium-gray);
+  opacity: 0.5;
 }
 
 .textarea-field:focus {

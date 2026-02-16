@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: white;
+  background: var(--color-white);
   border-radius: 6px;
   padding: 32px;
   width: 480px;
@@ -20,7 +20,7 @@
   font-weight: 700;
   font-size: 18px;
   line-height: 1;
-  color: #000112;
+  color: var(--color-black);
   margin: 0;
 }
 
@@ -76,7 +76,7 @@
   margin-bottom: 8px;
 }
 
-.subtask-checkbox input[type="checkbox"] {
+.subtask-checkbox input[type='checkbox'] {
   position: absolute;
   opacity: 0;
   cursor: pointer;
@@ -87,19 +87,19 @@
   height: 16px;
   border: 1px solid rgba(130, 143, 163, 0.25);
   border-radius: 2px;
-  background: white;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
 }
 
-.subtask-checkbox input[type="checkbox"]:checked + .checkbox-custom {
+.subtask-checkbox input[type='checkbox']:checked + .checkbox-custom {
   background: #635fc7;
   border-color: #635fc7;
 }
 
-.subtask-checkbox input[type="checkbox"]:checked + .checkbox-custom::after {
+.subtask-checkbox input[type='checkbox']:checked + .checkbox-custom::after {
   content: '';
   width: 10px;
   height: 6px;
@@ -183,7 +183,6 @@
 .error-message {
   display: block;
   font-size: 11px;
-  color: #ea5555;
+  color: var(--color-red);
   margin-top: 4px;
-  font-weight: 500;
 }
