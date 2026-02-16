@@ -2,12 +2,12 @@ import { Component, ChangeDetectionStrategy, input, output } from '@angular/core
 
 @Component({
   selector: 'app-button',
-  templateUrl: './button.html',
-  styleUrl: './button.css',
+  templateUrl: './button.component.html',
+  styleUrl: './button.component.css',
 
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Button {
+export class ButtonComponent {
   public readonly variant = input<'primary' | 'secondary' | 'danger'>('primary');
   public readonly size = input<'sm' | 'md' | 'lg'>('md');
   public readonly disabled = input<boolean>(false);

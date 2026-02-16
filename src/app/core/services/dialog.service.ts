@@ -1,24 +1,18 @@
-import { Injectable, signal, Component } from '@angular/core';
-
-export interface DialogConfig {
-  title: string;
-  message: string;
-  confirmText?: string;
-  cancelText?: string;
-}
+import { Injectable, signal } from '@angular/core';
+import { IDialogConfig } from '../models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DialogService {
-  private dialogConfig = signal<DialogConfig | null>(null);
+  private dialogConfig = signal<IDialogConfig | null>(null);
   private resolvePromise?: (value: boolean) => void;
 
   get config() {
     return this.dialogConfig;
   }
 
-  confirm(config: DialogConfig): Promise<boolean> {
+  confirm(config: IDialogConfig): Promise<boolean> {
     this.dialogConfig.set({
       ...config,
       confirmText: config.confirmText || 'Confirm',

@@ -14,18 +14,18 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { BoardCard } from '../board-card/board-card';
+import { BoardCardComponent } from '../board-card/board-card.component';
 import { ITask, IColumn } from '../../../../core/models';
 import { BoardService } from '../../../../core/services';
 
 @Component({
   selector: 'app-board',
-  imports: [BoardCard, DragDropModule],
-  templateUrl: './board.html',
-  styleUrl: './board.css',
+  imports: [BoardCardComponent, DragDropModule],
+  templateUrl: './board.component.html',
+  styleUrl: './board.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Board implements OnInit {
+export class BoardComponent implements OnInit {
   private changeDetectorRef = inject(ChangeDetectorRef);
   private boardService = inject(BoardService);
   private router = inject(Router);

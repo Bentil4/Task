@@ -1,19 +1,18 @@
 import { Component, output, input, effect, inject, computed, HostListener } from '@angular/core';
-import { FormBuilder, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InputComponent } from '../../../../shared/components/input/input';
-import { TextareaComponent } from '../../../../shared/components/textarea/textarea';
-import { SelectComponent } from '../../../../shared/components/select/select';
-import { DateInputComponent } from '../../../../shared/components/date-input/date-input';
+import { FormBuilder, FormArray, ReactiveFormsModule, Validators, FormGroup, FormControl } from '@angular/forms';
+import { InputComponent } from '../../../../shared/components';
+import { TextareaComponent } from '../../../../shared/components';
+import { SelectComponent } from '../../../../shared/components';
+import { DateInputComponent } from '../../../../shared/components';
 import { BoardService } from '../../../../core/services';
 import { TaskValidators } from '../../../../core/validators';
-import type { SelectOption } from '../../../../shared/components/select/select';
-import type { ITask } from '../../../../core/models';
-import type { TaskFormData } from '../add-task-form/add-task-form';
+import type { ISelectOption, ITask, ITaskFormData } from '../../../../core/models';
+import { FormErrorHelper } from '../../../../core/utils';
 
 @Component({
   selector: 'app-edit-task-form',
-  templateUrl: './edit-task-form.html',
-  styleUrl: './edit-task-form.css',
+  templateUrl: './edit-task-form.component.html',
+  styleUrl: './edit-task-form.component.css',
   imports: [
     ReactiveFormsModule,
     InputComponent,
@@ -71,10 +70,10 @@ export class EditTaskFormComponent {
     description: ['', Validators.maxLength(500)],
     dueDate: ['', TaskValidators.futureDate()],
     status: ['', Validators.required],
-    subtasks: this.fb.array<any>([]),
+    subtasks: this.fb.array<FormGroup>([]),
   });
 
-  public statusOptions = computed<SelectOption[]>(() => {
+  public statusOptions = computed<ISelectOption[]>(() => {
     const board = this.boardService.getBoardDataByIndex(this.boardId() - 1);
     return (
       board?.columns?.map((col) => ({
@@ -88,11 +87,11 @@ export class EditTaskFormComponent {
     );
   });
 
-  public taskUpdated = output<TaskFormData>();
+  public taskUpdated = output<ITaskFormData>();
   public canceled = output<void>();
 
   get subtasks() {
-    return this.form.get('subtasks') as FormArray;
+    return this.form.get('subtasks') as FormArray<FormGroup>;
   }
 
   constructor() {
@@ -121,8 +120,8 @@ export class EditTaskFormComponent {
         taskData.subtasks.forEach((st) => {
           this.subtasks.push(
             this.fb.group({
-              title: [st.title],
-              isCompleted: [st.isCompleted],
+              title: new FormControl(st.title),
+              isCompleted: new FormControl(st.isCompleted),
             }),
           );
         });
@@ -131,27 +130,14 @@ export class EditTaskFormComponent {
   }
   
   getErrorMessage(field: string): string {
-    const control = this.form.get(field);
-    if (!control?.errors || !control.touched) return '';
-    
-    const errors = control.errors;
-    const value = control.value || '';
-    
-    if (errors['required']) return `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
-    if (errors['whitespace']) return 'Cannot be empty or whitespace';
-    if (errors['minlength']) return `Must be at least ${errors['minlength'].requiredLength} characters (${value.length}/${errors['minlength'].requiredLength})`;
-    if (errors['maxlength']) return `Must be less than ${errors['maxlength'].requiredLength} characters (${value.length}/${errors['maxlength'].requiredLength})`;
-    if (errors['duplicate']) return 'A task with this title already exists';
-    if (errors['pastDate']) return 'Due date cannot be in the past';
-    
-    return '';
+    return FormErrorHelper.getErrorMessage(this.form.get(field), field);
   }
 
   public addSubtask() {
     this.subtasks.push(
       this.fb.group({
-        title: [''],
-        isCompleted: [false],
+        title: new FormControl(''),
+        isCompleted: new FormControl(false),
       }),
     );
   }
@@ -167,13 +153,16 @@ export class EditTaskFormComponent {
     }
 
     const formValue = this.form.value;
-    const formData: TaskFormData = {
+    const formData: ITaskFormData = {
       title: formValue.title || '',
       description: formValue.description || '',
       dueDate: formValue.dueDate || undefined,
       subtasks: (formValue.subtasks || [])
-        .filter((st: any) => st?.title?.trim())
-        .map((st: any) => ({ title: st.title, isCompleted: st.isCompleted || false })),
+        .filter((st: { title?: string; isCompleted?: boolean }) => st?.title?.trim())
+        .map((st: { title?: string; isCompleted?: boolean }) => ({ 
+          title: st.title || '', 
+          isCompleted: st.isCompleted || false 
+        })),
       status: formValue.status || 'todo',
     };
 

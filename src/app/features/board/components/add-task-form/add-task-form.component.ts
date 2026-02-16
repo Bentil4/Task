@@ -1,25 +1,18 @@
 import { Component, output, inject, input, computed, HostListener } from '@angular/core';
-import { FormBuilder, FormArray, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InputComponent } from '../../../../shared/components/input/input';
-import { TextareaComponent } from '../../../../shared/components/textarea/textarea';
-import { SelectComponent } from '../../../../shared/components/select/select';
-import { DateInputComponent } from '../../../../shared/components/date-input/date-input';
+import { FormBuilder, FormArray, ReactiveFormsModule, Validators, AbstractControl } from '@angular/forms';
+import { InputComponent } from '../../../../shared/components';
+import { TextareaComponent } from '../../../../shared/components';
+import { SelectComponent } from '../../../../shared/components';
+import { DateInputComponent } from '../../../../shared/components';
 import { BoardService } from '../../../../core/services';
 import { TaskValidators } from '../../../../core/validators';
-import type { SelectOption } from '../../../../shared/components/select/select';
-
-export interface TaskFormData {
-  title: string;
-  description: string;
-  dueDate?: string;
-  subtasks: { title: string; isCompleted?: boolean }[];
-  status: string;
-}
+import { ISelectOption, ITaskFormData } from '../../../../core/models';
+import { FormErrorHelper } from '../../../../core/utils';
 
 @Component({
   selector: 'app-add-task-form',
-  templateUrl: './add-task-form.html',
-  styleUrl: './add-task-form.css',
+  templateUrl: './add-task-form.component.html',
+  styleUrl: './add-task-form.component.css',
   imports: [
     ReactiveFormsModule,
     InputComponent,
@@ -57,7 +50,7 @@ export class AddTaskFormComponent {
     description: ['', Validators.maxLength(500)],
     dueDate: ['', TaskValidators.futureDate()],
     status: ['', Validators.required],
-    subtasks: this.formbuilder.array<any>([]),
+    subtasks: this.formbuilder.array<AbstractControl<string>>([]),
   });
 
   constructor() {
@@ -77,7 +70,7 @@ export class AddTaskFormComponent {
     }
   }
 
-  public statusOptions = computed<SelectOption[]>(() => {
+  public statusOptions = computed<ISelectOption[]>(() => {
     const board = this.boardService.getBoardDataByIndex(this.boardId() - 1);
     return (
       board?.columns?.map((column) => ({
@@ -91,7 +84,7 @@ export class AddTaskFormComponent {
     );
   });
 
-  public taskCreated = output<TaskFormData>();
+  public taskCreated = output<ITaskFormData>();
   public canceled = output<void>();
 
   get subtasks() {
@@ -107,20 +100,7 @@ export class AddTaskFormComponent {
   }
   
   getErrorMessage(field: string): string {
-    const control = this.form.get(field);
-    if (!control?.errors || !control.touched) return '';
-    
-    const errors = control.errors;
-    const value = control.value || '';
-    
-    if (errors['required']) return `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
-    if (errors['whitespace']) return 'Cannot be empty or whitespace';
-    if (errors['minlength']) return `Must be at least ${errors['minlength'].requiredLength} characters (${value.length}/${errors['minlength'].requiredLength})`;
-    if (errors['maxlength']) return `Must be less than ${errors['maxlength'].requiredLength} characters (${value.length}/${errors['maxlength'].requiredLength})`;
-    if (errors['duplicate']) return 'A task with this title already exists';
-    if (errors['pastDate']) return 'Due date cannot be in the past';
-    
-    return '';
+    return FormErrorHelper.getErrorMessage(this.form.get(field), field);
   }
 
   onSubmit() {
@@ -131,7 +111,7 @@ export class AddTaskFormComponent {
 
     const formValue = this.form.value;
     const subtasksArray = formValue.subtasks as string[];
-    const formData: TaskFormData = {
+    const formData: ITaskFormData = {
       title: formValue.title || '',
       description: formValue.description || '',
       dueDate: formValue.dueDate || undefined,

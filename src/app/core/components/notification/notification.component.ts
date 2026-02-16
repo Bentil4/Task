@@ -3,8 +3,8 @@ import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-notification',
-  templateUrl: './notification.html',
-  styleUrl: './notification.css',
+  templateUrl: './notification.component.html',
+  styleUrl: './notification.component.css',
 })
 export class NotificationComponent {
   private notificationService = inject(NotificationService);

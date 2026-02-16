@@ -1,22 +1,17 @@
 import { Injectable, signal } from '@angular/core';
-
-export interface Notification {
-  id: number;
-  message: string;
-  type: 'success' | 'error' | 'info';
-}
+import { INotification } from '../models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class NotificationService {
-  private notifications = signal<Notification[]>([]);
+  private notifications = signal<INotification[]>([]);
   private nextId = 1;
 
   public readonly notifications$ = this.notifications.asReadonly();
 
   public show(message: string, type: 'success' | 'error' | 'info' = 'info', duration = 3000): void {
-    const notification: Notification = {
+    const notification: INotification = {
       id: this.nextId++,
       message,
       type,

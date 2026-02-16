@@ -13,11 +13,11 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 @Component({
   selector: 'app-sidebar',
   imports: [RouterLink, RouterLinkActive],
-  templateUrl: './sidebar.html',
-  styleUrl: './sidebar.css',
+  templateUrl: './sidebar.component.html',
+  styleUrl: './sidebar.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Sidebar implements OnInit {
+export class SidebarComponent implements OnInit {
   private router = inject(Router);
   private boardService = inject(BoardService);
   public readonly themeService = inject(ThemeService);

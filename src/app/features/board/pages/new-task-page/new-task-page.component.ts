@@ -1,19 +1,18 @@
 import { Component, inject, signal, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { AddTaskFormComponent } from '../../components/add-task-form/add-task-form';
-import type { TaskFormData } from '../../components/add-task-form/add-task-form';
+import { AddTaskFormComponent } from '../../components/add-task-form/add-task-form.component';
+import { ITaskFormData, IHasUnsavedChanges } from '../../../../core/models';
 import { BoardService, NotificationService, DialogService } from '../../../../core/services';
-import { HasUnsavedChanges } from '../../../../core/guards';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-new-task-page',
-  templateUrl: './new-task-page.html',
-  styleUrl: './new-task-page.css',
+  templateUrl: './new-task-page.component.html',
+  styleUrl: './new-task-page.component.css',
   imports: [AddTaskFormComponent],
 })
-export class NewTaskPage implements HasUnsavedChanges {
+export class NewTaskPageComponent implements IHasUnsavedChanges {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private boardService = inject(BoardService);
@@ -29,7 +28,7 @@ export class NewTaskPage implements HasUnsavedChanges {
     { initialValue: 1 }
   );
 
-  onTaskCreated(taskData: TaskFormData): void {
+  onTaskCreated(taskData: ITaskFormData): void {
     if (this.isSubmitting()) return;
     
     this.isSubmitting.set(true);

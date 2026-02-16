@@ -3,11 +3,11 @@ import { ITask } from '../../../../core/models';
 
 @Component({
   selector: 'app-board-card',
-  templateUrl: './board-card.html',
-  styleUrl: './board-card.css',
+  templateUrl: './board-card.component.html',
+  styleUrl: './board-card.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BoardCard {
+export class BoardCardComponent {
   public readonly card = input<ITask | null>(null);
   public readonly cardClick = output<string>();
 

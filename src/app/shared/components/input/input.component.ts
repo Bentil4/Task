@@ -3,8 +3,8 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-input',
-  templateUrl: './input.html',
-  styleUrl: './input.css',
+  templateUrl: './input.component.html',
+  styleUrl: './input.component.css',
   imports: [FormsModule],
 })
 export class InputComponent {

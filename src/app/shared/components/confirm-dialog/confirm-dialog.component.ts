@@ -2,8 +2,8 @@ import { Component, input, output, viewChild, effect, ElementRef, HostListener }
 
 @Component({
   selector: 'app-confirm-dialog',
-  templateUrl: './confirm-dialog.html',
-  styleUrl: './confirm-dialog.css',
+  templateUrl: './confirm-dialog.component.html',
+  styleUrl: './confirm-dialog.component.css',
 })
 export class ConfirmDialogComponent {
   title = input<string>('Confirm');

@@ -1,14 +1,14 @@
 import { Component, ChangeDetectionStrategy, input, output } from '@angular/core';
-import { Button } from '../../../../shared/components';
+import { ButtonComponent } from '../../../../shared/components';
 
 @Component({
   selector: 'app-header',
-  imports: [Button],
-  templateUrl: './header.html',
-  styleUrl: './header.css',
+  imports: [ButtonComponent],
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Header {
+export class HeaderComponent {
   public readonly title = input<string>('Platform Launch');
   public readonly currentFilter = input<string>('');
   public readonly filterChange = output<string>();

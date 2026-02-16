@@ -41,4 +41,4 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
-export class ShowSidebarButton {}
+export class ShowSidebarButtonComponent {}

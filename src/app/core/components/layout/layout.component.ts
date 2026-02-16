@@ -1,22 +1,22 @@
 import { Component, ChangeDetectionStrategy, signal, inject, computed } from '@angular/core';
-import { Sidebar } from '../../../features/board/components/sidebar/sidebar';
-import { Header } from '../../../features/board/components/header/header';
-import { Board } from '../../../features/board/components/board/board';
+import { SidebarComponent } from '../../../features/board/components/sidebar/sidebar.component';
+import { HeaderComponent } from '../../../features/board/components/header/header.component';
+import { BoardComponent } from '../../../features/board/components/board/board.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { BoardService } from '../../services';
-import { ShowSidebarButton } from '../../../shared/components';
-import { HasUnsavedChanges } from '../../guards';
+import { ShowSidebarButtonComponent } from '../../../shared/components/show-sidebar-button/show-sidebar-button.component';
+import { IHasUnsavedChanges } from '../../models';
 import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-layout',
-  imports: [Sidebar, Header, Board, ShowSidebarButton],
-  templateUrl: './layout.html',
-  styleUrl: './layout.css',
+  imports: [SidebarComponent, HeaderComponent, BoardComponent, ShowSidebarButtonComponent],
+  templateUrl: './layout.component.html',
+  styleUrl: './layout.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Layout implements HasUnsavedChanges {
+export class LayoutComponent implements IHasUnsavedChanges {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private boardService = inject(BoardService);

@@ -1,9 +1,13 @@
 import { Injectable, signal, inject } from '@angular/core';
-import { IBoard, ITask } from '../models/board.model';
+import { IBoard, ITask, IColumn } from '../models/board.model';
 import { BOARDS, DATA_URL } from '../constants/app.constants';
 import { StorageService } from './storage.service';
 
 const STORAGE_KEY = 'kanban_boards_data';
+
+interface IBoardData {
+  boards?: IBoard[];
+}
 
 @Injectable({
   providedIn: 'root',
@@ -28,12 +32,12 @@ export class BoardService {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const data = await response.json();
+      const data: IBoardData = await response.json();
       const boardsWithIds = data.boards?.map((board: IBoard) => ({
         ...board,
-        columns: board.columns?.map(column => ({
+        columns: board.columns?.map((column: IColumn) => ({
           ...column,
-          tasks: column.tasks.map((task: any) => ({
+          tasks: column.tasks.map((task: ITask) => ({
             ...task,
             id: task.id || this.generateTaskId()
           }))
@@ -104,7 +108,7 @@ export class BoardService {
     if (!board?.columns) return false;
 
     let taskFound = false;
-    let oldColumn: any = null;
+    let oldColumn: IColumn | null = null;
     let taskIndex = -1;
 
     for (const column of board.columns) {

@@ -1,21 +1,19 @@
 import { Component, inject, signal, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { EditTaskFormComponent } from '../../components/edit-task-form/edit-task-form';
+import { EditTaskFormComponent } from '../../components/edit-task-form/edit-task-form.component';
 import { ConfirmDialogComponent } from '../../../../shared/components';
-import type { TaskFormData } from '../../components/add-task-form/add-task-form';
+import { ITaskFormData, ITask, IHasUnsavedChanges } from '../../../../core/models';
 import { BoardService, NotificationService, DialogService } from '../../../../core/services';
-import { HasUnsavedChanges } from '../../../../core/guards';
-import type { ITask } from '../../../../core/models';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-task-page',
-  templateUrl: './edit-task-page.html',
-  styleUrl: './edit-task-page.css',
+  templateUrl: './edit-task-page.component.html',
+  styleUrl: './edit-task-page.component.css',
   imports: [EditTaskFormComponent, ConfirmDialogComponent],
 })
-export class EditTaskPage implements OnInit, HasUnsavedChanges {
+export class EditTaskPageComponent implements OnInit, IHasUnsavedChanges {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
   private boardService = inject(BoardService);
@@ -48,7 +46,7 @@ export class EditTaskPage implements OnInit, HasUnsavedChanges {
     }
   }
 
-  onTaskUpdated(taskData: TaskFormData): void {
+  onTaskUpdated(taskData: ITaskFormData): void {
     if (this.isSubmitting()) return;
     
     this.isSubmitting.set(true);
