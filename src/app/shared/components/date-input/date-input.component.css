@@ -1,0 +1,34 @@
+.date-label {
+  display: block;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--color-medium-gray);
+  margin-bottom: 8px;
+}
+
+.date-field {
+  width: 100%;
+  padding: 8px 16px;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 23px;
+  color: var(--color-medium-gray);
+  opacity: 0.5;
+
+  background: transparent;
+  border: 1px solid rgba(130, 143, 163, 0.25);
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.date-field:focus {
+  border-color: #635fc7;
+}
+
+.date-field:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

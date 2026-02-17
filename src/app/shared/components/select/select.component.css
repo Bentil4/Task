@@ -1,0 +1,57 @@
+.select-label {
+  display: block;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--color-medium-gray);
+  margin-bottom: 8px;
+}
+
+.select-wrapper {
+  position: relative;
+}
+
+.select-field {
+  width: 100%;
+  padding: 8px 16px;
+  padding-right: 40px;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 23px;
+  color: var(--color-medium-gray);
+  background: transparent;
+  opacity: 0.5;
+  border: 1px solid rgba(130, 143, 163, 0.25);
+  border-radius: 4px;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.select-field:focus {
+  border-color: #635fc7;
+}
+
+.select-field:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.select-icon {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.error-message {
+  display: block;
+  font-size: 11px;
+  color: var(--color-red);
+  margin-top: 4px;
+  font-weight: 500;
+}

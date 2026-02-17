@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { Login } from './features/auth';
-import { Settings } from './features/settings/settings';
-import { PageNotFound } from './core/components/page-not-found/page-not-found';
+import { LoginComponent } from './features/auth/components/login/login.component';
+import { SettingsComponent } from './features/settings/settings.component';
+import { PageNotFoundComponent } from './core/components/page-not-found/page-not-found.component';
 import { authGuard, guestGuard } from './features/auth';
 
 export const routes: Routes = [
@@ -12,7 +12,7 @@ export const routes: Routes = [
   },
   {
     path: 'login',
-    component: Login,
+    component: LoginComponent,
     title: 'Login',
     canActivate: [guestGuard],
   },
@@ -23,12 +23,12 @@ export const routes: Routes = [
   },
   {
     path: 'settings',
-    component: Settings,
+    component: SettingsComponent,
     title: 'Settings',
     canActivate: [authGuard],
   },
   {
     path: '**',
-    component: PageNotFound,
+    component: PageNotFoundComponent,
   },
 ];

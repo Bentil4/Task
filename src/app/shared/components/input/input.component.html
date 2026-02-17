@@ -1,0 +1,22 @@
+@if (label()) {
+  <label class="input-label" [attr.for]="'input-' + label()">{{ label() }}</label>
+}
+<section class="input-wrapper">
+  <input
+    #inputField
+    [id]="'input-' + label()"
+    class="input-field"
+    [type]="type()"
+    [placeholder]="placeholder()"
+    [value]="value()"
+    [required]="required()"
+    [disabled]="disabled()"
+    [attr.aria-required]="required()"
+    [attr.aria-invalid]="error() ? 'true' : null"
+    [attr.aria-describedby]="error() ? getErrorId() : null"
+    (input)="onValueChange($any($event.target).value)"
+  />
+</section>
+@if (error()) {
+  <span [id]="getErrorId()" class="error-message" role="alert" aria-live="polite">{{ error() }}</span>
+}

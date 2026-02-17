@@ -1,0 +1,14 @@
+<div class="notification-container">
+  @for (notification of notifications(); track notification.id) {
+    <div class="notification" [class]="'notification--' + notification.type">
+      <span class="notification__message">{{ notification.message }}</span>
+      <button 
+        class="notification__close" 
+        (click)="close(notification.id)"
+        aria-label="Close notification"
+      >
+        ×
+      </button>
+    </div>
+  }
+</div>

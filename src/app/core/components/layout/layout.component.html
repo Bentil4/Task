@@ -1,0 +1,28 @@
+<section class="app-shell">
+  <app-sidebar 
+    [hidden]="sidebarHidden()" 
+    (hide)="sidebarHidden.set(true)"
+  ></app-sidebar>
+
+  @if (sidebarHidden()) {
+    <button
+      app-show-sidebar-button
+      (click)="sidebarHidden.set(false)"
+      aria-label="Show sidebar"
+    ></button>
+  }
+
+  <section class="app-content" [class.sidebar-visible]="!sidebarHidden()">
+    <app-header 
+      [title]="boardTitle()" 
+      [currentFilter]="filterStatus() || ''"
+      (filterChange)="onFilterChange($event)"
+      (addTask)="onAddTask()"
+    ></app-header>
+    <app-board 
+      [boardId]="boardId()" 
+      [filterStatus]="filterStatus()" 
+      [sortBy]="sortBy()"
+    ></app-board>
+  </section>
+</section>

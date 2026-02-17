@@ -1,0 +1,111 @@
+<section class="edit-task-form">
+  <div class="form-header">
+    <h2 class="form-title">Edit Task</h2>
+    <button 
+      type="button" 
+      class="delete-button"
+      (click)="onDelete()"
+      [disabled]="isSubmitting()"
+      aria-label="Delete task"
+    >
+      <svg width="3" height="16" xmlns="http://www.w3.org/2000/svg">
+        <g fill="#828FA3" fill-rule="evenodd">
+          <circle cx="1.5" cy="1.5" r="1.5"/>
+          <circle cx="1.5" cy="8" r="1.5"/>
+          <circle cx="1.5" cy="14.5" r="1.5"/>
+        </g>
+      </svg>
+    </button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <app-input
+        label="Title *"
+        placeholder="e.g. Take coffee break"
+        [value]="form.get('title')?.value || ''"
+        (valueChange)="form.get('title')?.setValue($event, {emitEvent: false}); form.get('title')?.markAsTouched(); form.get('title')?.markAsDirty()"
+        [required]="true"
+        [autoFocus]="true"
+        [error]="getErrorMessage('title')"
+      />
+    </div>
+
+    <div class="form-group">
+      <app-textarea
+        label="Description"
+        placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
+        [value]="form.get('description')?.value || ''"
+        [rows]="4"
+        (valueChange)="form.get('description')?.setValue($event, {emitEvent: false}); form.get('description')?.markAsTouched(); form.get('description')?.markAsDirty()"
+      />
+      @if (form.get('description')?.invalid && form.get('description')?.touched) {
+        <span class="error-message" role="alert" aria-live="polite">{{ getErrorMessage('description') }}</span>
+      }
+    </div>
+
+    <div class="form-group">
+      <app-date-input
+        label="Due Date"
+        [value]="form.get('dueDate')?.value || ''"
+        (valueChange)="form.get('dueDate')?.setValue($event, {emitEvent: false}); form.get('dueDate')?.markAsTouched(); form.get('dueDate')?.markAsDirty()"
+      />
+      @if (form.get('dueDate')?.invalid && form.get('dueDate')?.touched) {
+        <span class="error-message" role="alert" aria-live="polite">{{ getErrorMessage('dueDate') }}</span>
+      }
+    </div>
+
+    <div class="form-group">
+      <label class="section-label">Subtasks</label>
+
+      @for (control of subtasks.controls; track $index) {
+        <div class="subtask-row">
+          <label class="subtask-checkbox">
+            <input 
+              type="checkbox" 
+              [checked]="control.value?.isCompleted"
+              (change)="toggleSubtaskCompletion($index)"
+            />
+            <span class="checkbox-custom"></span>
+          </label>
+          <app-input
+            placeholder="e.g. Make coffee"
+            [value]="control.value?.title || ''"
+            (valueChange)="control.patchValue({ title: $event }); control.markAsDirty()"
+          />
+          <button
+            type="button"
+            class="remove-button"
+            (click)="removeSubtask($index)"
+            aria-label="Remove subtask"
+          >
+            <svg width="15" height="15" xmlns="http://www.w3.org/2000/svg">
+              <g fill="#828FA3" fill-rule="evenodd">
+                <path d="m12.728 0 2.122 2.122L2.122 14.85 0 12.728z" />
+                <path d="M0 2.122 2.122 0 14.85 12.728l-2.122 2.122z" />
+              </g>
+            </svg>
+          </button>
+        </div>
+      }
+
+      <button type="button" class="add-subtask-button" (click)="addSubtask()">
+        + Add New Subtask
+      </button>
+    </div>
+
+    <div class="form-group">
+      <app-select
+        label="Status *"
+        [options]="statusOptions()"
+        [value]="form.get('status')?.value || ''"
+        (valueChange)="form.get('status')?.setValue($event, {emitEvent: false}); form.get('status')?.markAsTouched(); form.get('status')?.markAsDirty()"
+        [error]="getErrorMessage('status')"
+      />
+    </div>
+
+    <button type="submit" class="submit-button" [disabled]="isSubmitting() || form.invalid">
+      {{ isSubmitting() ? 'Saving...' : 'Save Changes' }}
+    </button>
+  </form>
+</section>

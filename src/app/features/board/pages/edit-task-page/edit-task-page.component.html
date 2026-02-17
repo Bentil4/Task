@@ -1,0 +1,28 @@
+<div class="page-overlay">
+  <div class="page-content">
+    <nav class="breadcrumb">
+      <a class="breadcrumb-link" (click)="navigateToBoard()">← Back to Board</a>
+    </nav>
+    @if (task()) {
+      <app-edit-task-form
+        [task]="task()"
+        [boardId]="boardId()"
+        [isSubmitting]="isSubmitting()"
+        (taskUpdated)="onTaskUpdated($event)"
+        (canceled)="onCancel()"
+        (taskDeleted)="onDeleteRequest()"
+      />
+    }
+  </div>
+</div>
+
+@if (showDeleteConfirm()) {
+  <app-confirm-dialog
+    title="Delete this task?"
+    message="Are you sure you want to delete this task? This action cannot be reversed."
+    confirmText="Delete"
+    cancelText="Cancel"
+    (confirmed)="onDeleteConfirm()"
+    (canceled)="onDeleteCancel()"
+  />
+}

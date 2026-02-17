@@ -4,9 +4,11 @@ export interface ISubtask {
 }
 
 export interface ITask {
+  id: string;
   title: string;
   description: string;
   status: string;
+  dueDate?: string;
   subtasks: ISubtask[];
 }
 

@@ -1,0 +1,188 @@
+.edit-task-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--color-white);
+  border-radius: 6px;
+  padding: 32px;
+  width: 480px;
+  max-width: 100%;
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.form-title {
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 1;
+  color: var(--color-black);
+  margin: 0;
+}
+
+.delete-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s;
+}
+
+.delete-button:hover {
+  opacity: 0.7;
+}
+
+.delete-button:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-group:last-of-type {
+  margin-bottom: 24px;
+}
+
+.section-label {
+  display: block;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+  color: #828fa3;
+  margin-bottom: 8px;
+}
+
+.subtask-row {
+  display: flex;
+  gap: 16px;
+  align-items: flex-end;
+  margin-bottom: 12px;
+}
+
+.subtask-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-bottom: 8px;
+}
+
+.subtask-checkbox input[type='checkbox'] {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.checkbox-custom {
+  width: 16px;
+  height: 16px;
+  border: 1px solid rgba(130, 143, 163, 0.25);
+  border-radius: 2px;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.subtask-checkbox input[type='checkbox']:checked + .checkbox-custom {
+  background: #635fc7;
+  border-color: #635fc7;
+}
+
+.subtask-checkbox input[type='checkbox']:checked + .checkbox-custom::after {
+  content: '';
+  width: 10px;
+  height: 6px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: rotate(-45deg) translateY(-1px);
+}
+
+.subtask-checkbox:hover .checkbox-custom {
+  border-color: #635fc7;
+}
+
+.subtask-row app-input {
+  flex: 1;
+}
+
+.remove-button {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: opacity 0.2s;
+}
+
+.remove-button:hover {
+  opacity: 0.7;
+}
+
+.remove-button svg {
+  display: block;
+}
+
+.add-subtask-button {
+  width: 100%;
+  padding: 8px;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 23px;
+  color: #635fc7;
+  background: rgba(99, 95, 199, 0.1);
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.add-subtask-button:hover {
+  background: rgba(99, 95, 199, 0.25);
+}
+
+.submit-button {
+  width: 100%;
+  padding: 8px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 23px;
+  color: white;
+  background: #635fc7;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.submit-button:hover {
+  background: #a8a4ff;
+}
+
+.submit-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error-message {
+  display: block;
+  font-size: 11px;
+  color: var(--color-red);
+  margin-top: 4px;
+}
