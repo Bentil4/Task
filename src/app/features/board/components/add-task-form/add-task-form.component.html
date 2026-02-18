@@ -7,7 +7,11 @@
         label="Title *"
         placeholder="e.g. Take coffee break"
         [value]="form.get('title')?.value || ''"
-        (valueChange)="form.get('title')?.setValue($event, {emitEvent: false}); form.get('title')?.markAsTouched(); form.get('title')?.markAsDirty()"
+        (valueChange)="
+          form.get('title')?.setValue($event, { emitEvent: false });
+          form.get('title')?.markAsTouched();
+          form.get('title')?.markAsDirty()
+        "
         [required]="true"
         [autoFocus]="true"
         [error]="getErrorMessage('title')"
@@ -20,10 +24,16 @@
         placeholder="e.g. It's always good to take a break. This 15 minute break will recharge the batteries a little."
         [value]="form.get('description')?.value || ''"
         [rows]="4"
-        (valueChange)="form.get('description')?.setValue($event, {emitEvent: false}); form.get('description')?.markAsTouched(); form.get('description')?.markAsDirty()"
+        (valueChange)="
+          form.get('description')?.setValue($event, { emitEvent: false });
+          form.get('description')?.markAsTouched();
+          form.get('description')?.markAsDirty()
+        "
       />
       @if (form.get('description')?.invalid && form.get('description')?.touched) {
-        <span class="error-message" role="alert" aria-live="polite">{{ getErrorMessage('description') }}</span>
+        <span class="error-message" role="alert" aria-live="polite">{{
+          getErrorMessage('description')
+        }}</span>
       }
     </div>
 
@@ -31,10 +41,16 @@
       <app-date-input
         label="Due Date"
         [value]="form.get('dueDate')?.value || ''"
-        (valueChange)="form.get('dueDate')?.setValue($event, {emitEvent: false}); form.get('dueDate')?.markAsTouched(); form.get('dueDate')?.markAsDirty()"
+        (valueChange)="
+          form.get('dueDate')?.setValue($event, { emitEvent: false });
+          form.get('dueDate')?.markAsTouched();
+          form.get('dueDate')?.markAsDirty()
+        "
       />
       @if (form.get('dueDate')?.invalid && form.get('dueDate')?.touched) {
-        <span class="error-message" role="alert" aria-live="polite">{{ getErrorMessage('dueDate') }}</span>
+        <span class="error-message" role="alert" aria-live="polite">{{
+          getErrorMessage('dueDate')
+        }}</span>
       }
     </div>
 
@@ -74,7 +90,11 @@
         label="Status *"
         [options]="statusOptions()"
         [value]="form.get('status')?.value || ''"
-        (valueChange)="form.get('status')?.setValue($event, {emitEvent: false}); form.get('status')?.markAsTouched(); form.get('status')?.markAsDirty()"
+        (valueChange)="
+          form.get('status')?.setValue($event, { emitEvent: false });
+          form.get('status')?.markAsTouched();
+          form.get('status')?.markAsDirty()
+        "
         [error]="getErrorMessage('status')"
       />
     </div>
