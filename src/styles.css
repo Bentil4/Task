@@ -108,8 +108,6 @@ body {
   color: var(--color-medium-gray);
 }
 
-/* End of tokens */
-
 /* Layout utilities for app shell */
 .app-shell {
   display: flex;
