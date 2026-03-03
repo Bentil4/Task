@@ -97,6 +97,7 @@ export class BoardComponent implements OnInit {
       const targetColumn = this.columns.find((col) => col.tasks === event.container.data);
       if (movedTask && targetColumn) {
         movedTask.status = targetColumn.name;
+        this.boardService.updateTask(this.boardId(), movedTask.id, { status: targetColumn.name });
       }
     }
     this.changeDetectorRef.markForCheck();
