@@ -77,3 +77,24 @@
   cursor: not-allowed;
   pointer-events: none;
 }
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .btn {
+    padding: 12px 20px;
+    font-size: 14px;
+    min-height: 44px;
+  }
+
+  .btn--sm {
+    padding: 8px 14px;
+    font-size: 12px;
+    min-height: 36px;
+  }
+
+  .btn--lg {
+    padding: 14px 22px;
+    font-size: 14px;
+    min-height: 48px;
+  }
+}

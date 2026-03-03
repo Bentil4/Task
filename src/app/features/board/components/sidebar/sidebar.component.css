@@ -253,3 +253,48 @@
 .sidebar__theme-toggle input:focus + .sidebar__theme-slider {
   box-shadow: 0 0 1px var(--color-primary);
 }
+
+/* Tablet and Mobile responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    z-index: 1000;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar__brand {
+    padding-left: 24px;
+    margin-bottom: 32px;
+  }
+
+  .sidebar__label {
+    padding-left: 24px;
+  }
+
+  .sidebar__link {
+    padding: 14px 16px 15px 24px;
+    margin-right: 16px;
+    min-height: 48px;
+  }
+
+  .sidebar__create {
+    padding: 14px 16px 15px 24px;
+    min-height: 48px;
+  }
+
+  .sidebar__footer {
+    padding: 0 16px 24px 16px;
+  }
+
+  .sidebar__settings,
+  .sidebar__toggle {
+    padding: 14px 16px 15px 24px;
+    margin: 0 -16px 8px -16px;
+    min-height: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar {
+    width: 264px;
+  }
+}

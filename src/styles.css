@@ -84,6 +84,7 @@ body {
   background: var(--bg-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* overflow-x: hidden; */
 }
 
 /* Utility classes (optional) */
@@ -111,6 +112,7 @@ body {
 .app-shell {
   display: flex;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 .app-content {
   flex: 1;
@@ -118,6 +120,7 @@ body {
   flex-direction: column;
   min-height: 100vh;
   transition: margin-left 250ms ease;
+  overflow-x: hidden;
 }
 .app-content.sidebar-visible {
   margin-left: 300px;
@@ -129,6 +132,13 @@ app-header {
 }
 app-board {
   flex: 1;
+}
+
+/* Responsive breakpoints */
+@media (max-width: 768px) {
+  .app-content.sidebar-visible {
+    margin-left: 0;
+  }
 }
 
 /* Dark theme overrides  */

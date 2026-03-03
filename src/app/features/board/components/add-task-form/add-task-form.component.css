@@ -116,3 +116,36 @@
   margin-top: 4px;
   font-weight: 500;
 }
+
+/* Tablet and Mobile responsive */
+@media (max-width: 768px) {
+  .add-task-form {
+    width: 100%;
+    max-width: 480px;
+    padding: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .add-task-form {
+    padding: 20px 16px;
+  }
+
+  .form-title {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .subtask-row {
+    gap: 12px;
+  }
+
+  .remove-button {
+    width: 36px;
+    height: 36px;
+  }
+}

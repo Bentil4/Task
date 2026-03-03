@@ -13,6 +13,7 @@ export class HeaderComponent {
   public readonly currentFilter = input<string>('');
   public readonly filterChange = output<string>();
   public readonly addTask = output<void>();
+  public readonly menuToggle = output<void>();
 
   public onFilterChange(event: Event): void {
     const select = event.target as HTMLSelectElement;

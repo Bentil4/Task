@@ -1,4 +1,8 @@
 <section class="app-shell">
+  @if (!sidebarHidden()) {
+    <div class="sidebar-backdrop" (click)="sidebarHidden.set(true)"></div>
+  }
+  
   <app-sidebar 
     [hidden]="sidebarHidden()" 
     (hide)="sidebarHidden.set(true)"
@@ -18,6 +22,7 @@
       [currentFilter]="filterStatus() || ''"
       (filterChange)="onFilterChange($event)"
       (addTask)="onAddTask()"
+      (menuToggle)="sidebarHidden.set(!sidebarHidden())"
     ></app-header>
     <app-board 
       [boardId]="boardId()" 

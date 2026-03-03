@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, signal, inject, computed } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, inject, computed, effect } from '@angular/core';
 import { SidebarComponent } from '../../../features/board/components/sidebar/sidebar.component';
 import { HeaderComponent } from '../../../features/board/components/header/header.component';
 import { BoardComponent } from '../../../features/board/components/board/board.component';
@@ -21,7 +21,25 @@ export class LayoutComponent implements IHasUnsavedChanges {
   private router = inject(Router);
   private boardService = inject(BoardService);
   
-  public readonly sidebarHidden = signal(false);
+  public readonly sidebarHidden = signal(this.isMobileOrTablet());
+  
+  constructor() {
+    effect(() => {
+      if (typeof window !== 'undefined') {
+        const handleResize = () => {
+          if (this.isMobileOrTablet() && !this.sidebarHidden()) {
+            this.sidebarHidden.set(true);
+          }
+        };
+        window.addEventListener('resize', handleResize);
+      }
+    });
+  }
+  
+  private isMobileOrTablet(): boolean {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth <= 768;
+  }
   
   public readonly boardId = toSignal(
     this.route.paramMap.pipe(

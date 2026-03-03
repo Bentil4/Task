@@ -1,5 +1,16 @@
 <header class="header">
-  <h1 class="header__title">{{ title() }}</h1>
+  <div class="header__left">
+    <button class="header__menu-btn" (click)="menuToggle.emit()" aria-label="Toggle menu">
+      <svg width="16" height="11" xmlns="http://www.w3.org/2000/svg">
+        <g fill="#828FA3" fill-rule="evenodd">
+          <rect width="16" height="2" rx="1"/>
+          <rect y="4.5" width="16" height="2" rx="1"/>
+          <rect y="9" width="16" height="2" rx="1"/>
+        </g>
+      </svg>
+    </button>
+    <h1 class="header__title">{{ title() }}</h1>
+  </div>
   <section class="header__actions">
     <div class="header__filter">
       <label for="status-filter" class="header__filter-label">Filter:</label>
@@ -16,8 +27,9 @@
       </select>
     </div>
     <app-button  ariaLabel="Add New Task" (clicked)="onAddTask()">
-      + Add New Task</app-button
-    >
+      <span class="btn-text">+ Add New Task</span>
+      <span class="btn-icon">+</span>
+    </app-button>
     <button class="header__more" aria-label="More options">
       <img src="assets/icon-vertical-ellipsis.svg" alt="vertical-ellipsis" />
     </button>

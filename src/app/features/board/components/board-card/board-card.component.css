@@ -59,3 +59,21 @@
   color: var(--color-medium-gray);
   line-height: 15px;
 }
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .card {
+    padding: 16px 12px;
+  }
+
+  .card__title {
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  .card__description,
+  .card__commit,
+  .card__subtasks {
+    font-size: 11px;
+  }
+}

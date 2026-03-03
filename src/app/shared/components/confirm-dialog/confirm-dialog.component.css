@@ -71,3 +71,34 @@
 .error-message {
   color: var(--color-red);
 }
+
+/* Mobile responsive */
+@media (max-width: 480px) {
+  .dialog-overlay {
+    padding: 16px;
+  }
+
+  .dialog-content {
+    padding: 24px 20px;
+  }
+
+  .dialog-title {
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+
+  .dialog-message {
+    font-size: 12px;
+    margin-bottom: 20px;
+  }
+
+  .dialog-actions {
+    gap: 12px;
+    flex-direction: column;
+  }
+
+  .btn-delete,
+  .btn-cancel {
+    width: 100%;
+  }
+}
