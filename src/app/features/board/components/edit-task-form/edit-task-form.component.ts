@@ -2,7 +2,6 @@ import { Component, output, input, effect, inject, computed, HostListener } from
 import { FormBuilder, FormArray, ReactiveFormsModule, Validators, FormGroup, FormControl } from '@angular/forms';
 import { InputComponent } from '../../../../shared/components';
 import { TextareaComponent } from '../../../../shared/components';
-import { SelectComponent } from '../../../../shared/components';
 import { DateInputComponent } from '../../../../shared/components';
 import { BoardService } from '../../../../core/services';
 import { TaskValidators } from '../../../../core/validators';
@@ -17,7 +16,6 @@ import { FormErrorHelper } from '../../../../core/utils';
     ReactiveFormsModule,
     InputComponent,
     TextareaComponent,
-    SelectComponent,
     DateInputComponent,
   ],
 })
@@ -69,7 +67,7 @@ export class EditTaskFormComponent {
     ],
     description: ['', Validators.maxLength(500)],
     dueDate: ['', TaskValidators.futureDate()],
-    status: ['', Validators.required],
+    status: ['Todo', Validators.required],
     subtasks: this.fb.array<FormGroup>([]),
   });
 
@@ -78,11 +76,11 @@ export class EditTaskFormComponent {
     return (
       board?.columns?.map((col) => ({
         label: col.name,
-        value: col.name.toLowerCase(),
+        value: col.name,
       })) ?? [
-        { label: 'Todo', value: 'todo' },
-        { label: 'Doing', value: 'doing' },
-        { label: 'Done', value: 'done' },
+        { label: 'Todo', value: 'Todo' },
+        { label: 'Doing', value: 'Doing' },
+        { label: 'Done', value: 'Done' },
       ]
     );
   });
@@ -113,8 +111,9 @@ export class EditTaskFormComponent {
           title: taskData.title,
           description: taskData.description,
           dueDate: taskData.dueDate || '',
-          status: taskData.status.toLowerCase(),
+          status: taskData.status,
         });
+        this.form.get('title')?.updateValueAndValidity();
 
         this.subtasks.clear();
         taskData.subtasks.forEach((st) => {
@@ -125,6 +124,7 @@ export class EditTaskFormComponent {
             }),
           );
         });
+        this.form.markAsPristine();
       }
     });
   }

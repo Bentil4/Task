@@ -95,13 +95,15 @@
     </div>
 
     <div class="form-group">
-      <app-select
-        label="Status *"
-        [options]="statusOptions()"
-        [value]="form.get('status')?.value || ''"
-        (valueChange)="form.get('status')?.setValue($event, {emitEvent: false}); form.get('status')?.markAsTouched(); form.get('status')?.markAsDirty()"
-        [error]="getErrorMessage('status')"
-      />
+      <label class="section-label">Status *</label>
+      <select formControlName="status" class="select-field">
+        @for (option of statusOptions(); track option.value) {
+          <option [value]="option.value">{{ option.label }}</option>
+        }
+      </select>
+      @if (form.get('status')?.invalid && form.get('status')?.touched) {
+        <span class="error-message" role="alert" aria-live="polite">{{ getErrorMessage('status') }}</span>
+      }
     </div>
 
     <button type="submit" class="submit-button" [disabled]="isSubmitting() || form.invalid">
