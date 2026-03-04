@@ -42,9 +42,9 @@ export class AddTaskFormComponent {
       '',
       [
         Validators.required,
+        Validators.minLength(3),
         Validators.maxLength(100),
         TaskValidators.noWhitespace(),
-        TaskValidators.minLength(3),
       ],
     ],
     description: ['', Validators.maxLength(500)],

@@ -60,9 +60,9 @@ export class EditTaskFormComponent {
       '',
       [
         Validators.required,
+        Validators.minLength(3),
         Validators.maxLength(100),
         TaskValidators.noWhitespace(),
-        TaskValidators.minLength(3),
       ],
     ],
     description: ['', Validators.maxLength(500)],
@@ -101,9 +101,9 @@ export class EditTaskFormComponent {
           .get('title')
           ?.setValidators([
             Validators.required,
+            Validators.minLength(3),
             Validators.maxLength(100),
             TaskValidators.noWhitespace(),
-            TaskValidators.minLength(3),
             TaskValidators.duplicateTitle(this.existingTitles(), taskData.title),
           ]);
 

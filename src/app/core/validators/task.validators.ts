@@ -9,15 +9,6 @@ export class TaskValidators {
     };
   }
 
-  public static minLength(min: number): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      if (!control.value) return null;
-      const trimmed = (control.value || '').trim();
-      return trimmed.length < min
-        ? { minlength: { requiredLength: min, actualLength: trimmed.length } }
-        : null;
-    };
-  }
 
   public static duplicateTitle(existingTitles: string[], currentTitle?: string): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
