@@ -27,7 +27,7 @@
         (valueChange)="form.get('title')?.setValue($event, {emitEvent: false}); form.get('title')?.markAsTouched(); form.get('title')?.markAsDirty()"
         [required]="true"
         [autoFocus]="true"
-        [error]="getErrorMessage('title')"
+        [error]="form.get('title')?.touched ? getErrorMessage('title') : ''"
       />
     </div>
 

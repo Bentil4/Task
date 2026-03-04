@@ -10,12 +10,6 @@ export class FormErrorHelper {
 
     if (errors['required']) return `${capitalizedField} is required`;
     if (errors['whitespace']) return 'Cannot be empty or whitespace';
-    if (errors['minlength']) {
-      return `Must be at least ${errors['minlength'].requiredLength} characters (${value.length}/${errors['minlength'].requiredLength})`;
-    }
-    if (errors['maxlength']) {
-      return `Must be less than ${errors['maxlength'].requiredLength} characters (${value.length}/${errors['maxlength'].requiredLength})`;
-    }
     if (errors['duplicate']) return 'A task with this title already exists';
     if (errors['pastDate']) return 'Due date cannot be in the past';
 
