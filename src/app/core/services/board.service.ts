@@ -172,6 +172,44 @@ export class BoardService {
     return false;
   }
 
+  public updateBoard(boardId: number, newName: string): boolean {
+    const boards = this.allBoardsData();
+    const board = boards.find(b => b.id === boardId);
+    if (!board) return false;
+
+    board.name = newName;
+    this.allBoardsData.set([...boards]);
+    this.boards.set(boards.map(b => ({ id: b.id, name: b.name })));
+    this.saveToStorage();
+    return true;
+  }
+
+  public deleteBoard(boardId: number): boolean {
+    const boards = this.allBoardsData();
+    const index = boards.findIndex(b => b.id === boardId);
+    if (index === -1) return false;
+
+    boards.splice(index, 1);
+    this.allBoardsData.set([...boards]);
+    this.boards.set(boards.map(b => ({ id: b.id, name: b.name })));
+    this.saveToStorage();
+    return true;
+  }
+
+  public deleteColumn(boardId: number, columnName: string): boolean {
+    const boards = this.allBoardsData();
+    const board = boards.find(b => b.id === boardId);
+    if (!board?.columns) return false;
+
+    const index = board.columns.findIndex(c => c.name === columnName);
+    if (index === -1) return false;
+
+    board.columns.splice(index, 1);
+    this.allBoardsData.set([...boards]);
+    this.saveToStorage();
+    return true;
+  }
+
   public addBoard(boardName: string): boolean {
     const boards = this.allBoardsData();
     const newBoardId = Math.max(...boards.map(b => b.id), 0) + 1;
@@ -187,19 +225,6 @@ export class BoardService {
     };
 
     boards.push(newBoard);
-    this.allBoardsData.set([...boards]);
-    this.boards.set(boards.map(b => ({ id: b.id, name: b.name })));
-    this.saveToStorage();
-    return true;
-  }
-
-  public deleteBoard(boardId: number): boolean {
-    const boards = this.allBoardsData();
-    const index = boards.findIndex(b => b.id === boardId);
-    
-    if (index === -1) return false;
-    
-    boards.splice(index, 1);
     this.allBoardsData.set([...boards]);
     this.boards.set(boards.map(b => ({ id: b.id, name: b.name })));
     this.saveToStorage();

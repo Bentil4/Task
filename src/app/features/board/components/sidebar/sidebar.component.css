@@ -48,6 +48,35 @@
 
 .sidebar__item {
   padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sidebar__delete {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-medium-gray);
+  transition: color 0.2s ease;
+  opacity: 0;
+}
+
+.sidebar__item:hover .sidebar__delete {
+  opacity: 1;
+}
+
+.sidebar__delete:hover {
+  color: var(--color-red);
+}
+
+.sidebar__delete svg {
+  width: 14px;
+  height: 14px;
 }
 
 .sidebar__link {

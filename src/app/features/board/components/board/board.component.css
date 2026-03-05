@@ -8,6 +8,18 @@
   box-sizing: border-box;
   overflow-x: auto;
   overflow-y: hidden;
+  position: relative;
+}
+
+.board__backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 99;
 }
 
 .board__empty {
@@ -35,6 +47,8 @@
   display: flex;
   gap: 24px;
   align-items: flex-start;
+  justify-content: center;
+  margin: 0 auto;
 }
 
 .board__column {
@@ -170,9 +184,11 @@
 }
 
 .board__column-form-wrapper {
-  min-width: 280px;
-  display: flex;
-  align-items: flex-start;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
 }
 
 /* Tablet responsive */

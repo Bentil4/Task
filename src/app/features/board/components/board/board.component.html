@@ -1,4 +1,7 @@
 <main class="board" role="main">
+  @if (isCreatingColumn()) {
+    <div class="board__backdrop"></div>
+  }
   @if (columns && columns.length > 0) {
     <div class="board__columns" cdkDropListGroup>
       @for (column of columns; track column.name) {

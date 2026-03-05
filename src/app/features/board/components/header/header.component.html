@@ -30,8 +30,50 @@
       <span class="btn-text">+ Add New Task</span>
       <span class="btn-icon">+</span>
     </app-button>
-    <button class="header__more" aria-label="More options">
-      <img src="assets/icon-vertical-ellipsis.svg" alt="vertical-ellipsis" />
-    </button>
+    <div class="header__menu-wrapper">
+      <button class="header__more" (click)="toggleMenu()" aria-label="More options">
+        <img src="assets/icon-vertical-ellipsis.svg" alt="vertical-ellipsis" />
+      </button>
+      @if (isMenuOpen()) {
+        <div class="header__dropdown">
+          <button class="header__dropdown-item header__dropdown-item--edit" (click)="openEditBoard()">
+            Edit Board
+          </button>
+          <button class="header__dropdown-item header__dropdown-item--delete" (click)="deleteBoard()">
+            Delete Board
+          </button>
+        </div>
+      }
+    </div>
   </section>
 </header>
+
+@if (isEditingBoard()) {
+  <div class="header__modal-overlay" (click)="cancelEditBoard()">
+    <div class="header__modal" (click)="$event.stopPropagation()">
+      <h2 class="header__modal-title">Edit Board</h2>
+      <form (ngSubmit)="saveEditBoard()" class="header__form">
+        <div class="header__form-group">
+          <label for="board-name" class="header__form-label">Board Name</label>
+          <input
+            id="board-name"
+            type="text"
+            class="header__form-input"
+            [(ngModel)]="editBoardName"
+            name="boardName"
+            placeholder="Enter board name"
+            required
+          />
+        </div>
+        <div class="header__form-actions">
+          <button type="submit" class="header__form-btn header__form-btn--save">
+            Save Changes
+          </button>
+          <button type="button" class="header__form-btn header__form-btn--cancel" (click)="cancelEditBoard()">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

@@ -8,7 +8,7 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { ThemeService, BoardService, DialogService } from '../../../../core/services';
+import { ThemeService, BoardService, DialogService, NotificationService } from '../../../../core/services';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CreateBoardFormComponent } from '../create-board-form/create-board-form.component';
 
@@ -58,6 +58,18 @@ export class SidebarComponent implements OnInit {
   public onThemeToggle(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.themeService.setTheme(input.checked ? 'dark' : 'light');
+  }
+
+  private notificationService = inject(NotificationService);
+
+  public onDeleteBoard(boardId: number): void {
+    const success = this.boardService.deleteBoard(boardId);
+    if (success) {
+      this.notificationService.success('Board deleted successfully');
+      this.router.navigate(['/board', 1]);
+    } else {
+      this.notificationService.error('Failed to delete board');
+    }
   }
 
   public onNavigateWithFilter(status: string): void {

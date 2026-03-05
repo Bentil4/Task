@@ -19,10 +19,13 @@
   <section class="app-content" [class.sidebar-visible]="!sidebarHidden()">
     <app-header 
       [title]="boardTitle()" 
+      [boardId]="boardId()"
       [currentFilter]="filterStatus() || ''"
       (filterChange)="onFilterChange($event)"
       (addTask)="onAddTask()"
       (menuToggle)="sidebarHidden.set(!sidebarHidden())"
+      (boardUpdated)="onBoardUpdated()"
+      (boardDeleted)="onBoardDeleted()"
     ></app-header>
     <app-board 
       [boardId]="boardId()" 

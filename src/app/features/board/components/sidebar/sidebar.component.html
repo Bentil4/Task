@@ -12,6 +12,12 @@
             <img src="assets/icon-board.svg" alt="Board icon" />
             <p>{{ board.name }}</p>
           </a>
+          <button class="sidebar__delete" (click)="onDeleteBoard(board.id)" aria-label="Delete board" title="Delete board">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.728 0 14.85 2.122 2.122 14.85 0 12.728z"/>
+              <path d="M0 2.122 2.122 0 14.85 12.728l-2.122 2.122z"/>
+            </svg>
+          </button>
         </li>
       }
     </ul>

@@ -78,6 +78,19 @@ export class LayoutComponent implements IHasUnsavedChanges {
     this.router.navigate(['/board', this.boardId(), 'new-task']);
   }
 
+  public onBoardUpdated(): void {
+    this.boardService.loadBoardsData();
+  }
+
+  public onBoardDeleted(): void {
+    const boards = this.boardService.boards();
+    if (boards.length > 0) {
+      this.router.navigate(['/board', boards[0].id]);
+    } else {
+      this.router.navigate(['/board']);
+    }
+  }
+
   public hasUnsavedChanges(): boolean {
     return false;
   }

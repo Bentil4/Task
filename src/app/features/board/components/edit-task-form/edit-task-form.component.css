@@ -7,6 +7,17 @@
   padding: 32px;
   width: 480px;
   max-width: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.edit-task-form::-webkit-scrollbar {
+  display: none;
+}
+
+.edit-task-form {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 .form-header {
