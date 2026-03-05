@@ -23,7 +23,9 @@ export class BoardService {
     try {
       const cached = this.storageService.getItem(STORAGE_KEY);
       if (cached) {
-        this.allBoardsData.set(JSON.parse(cached));
+        const data = JSON.parse(cached);
+        this.allBoardsData.set(data);
+        this.boards.set(data.map((b: IBoard) => ({ id: b.id, name: b.name })));
         this.isLoading.set(false);
         return;
       }
@@ -33,8 +35,9 @@ export class BoardService {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data: IBoardData = await response.json();
-      const boardsWithIds = data.boards?.map((board: IBoard) => ({
+      const boardsWithIds = data.boards?.map((board: IBoard, index: number) => ({
         ...board,
+        id: board.id || index + 1,
         columns: board.columns?.map((column: IColumn) => ({
           ...column,
           tasks: column.tasks.map((task: ITask) => ({
@@ -44,6 +47,7 @@ export class BoardService {
         }))
       })) ?? [];
       this.allBoardsData.set(boardsWithIds);
+      this.boards.set(boardsWithIds.map(b => ({ id: b.id, name: b.name })));
       this.saveToStorage();
     } catch (error) {
       console.error('Failed to load boards:', error);
@@ -166,6 +170,57 @@ export class BoardService {
     }
 
     return false;
+  }
+
+  public addBoard(boardName: string): boolean {
+    const boards = this.allBoardsData();
+    const newBoardId = Math.max(...boards.map(b => b.id), 0) + 1;
+    
+    const newBoard: IBoard = {
+      id: newBoardId,
+      name: boardName,
+      columns: [
+        { name: 'Todo', tasks: [] },
+        { name: 'Doing', tasks: [] },
+        { name: 'Done', tasks: [] }
+      ]
+    };
+
+    boards.push(newBoard);
+    this.allBoardsData.set([...boards]);
+    this.boards.set(boards.map(b => ({ id: b.id, name: b.name })));
+    this.saveToStorage();
+    return true;
+  }
+
+  public deleteBoard(boardId: number): boolean {
+    const boards = this.allBoardsData();
+    const index = boards.findIndex(b => b.id === boardId);
+    
+    if (index === -1) return false;
+    
+    boards.splice(index, 1);
+    this.allBoardsData.set([...boards]);
+    this.boards.set(boards.map(b => ({ id: b.id, name: b.name })));
+    this.saveToStorage();
+    return true;
+  }
+
+  public addColumn(boardId: number, columnName: string): boolean {
+    const boards = this.allBoardsData();
+    const board = boards[boardId - 1];
+
+    if (!board?.columns) return false;
+
+    const newColumn: IColumn = {
+      name: columnName,
+      tasks: []
+    };
+
+    board.columns.push(newColumn);
+    this.allBoardsData.set([...boards]);
+    this.saveToStorage();
+    return true;
   }
 
   private generateTaskId(): string {

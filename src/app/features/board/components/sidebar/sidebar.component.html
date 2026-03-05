@@ -15,10 +15,17 @@
         </li>
       }
     </ul>
-    <button class="sidebar__create" (click)="onCreateNewBoard()" aria-label="Create new board">
-      <img src="assets/icon-board.svg" alt="Add task icon" />
-      <span>+ Create New Board</span>
-    </button>
+    @if (isCreatingBoard()) {
+      <app-create-board-form
+        (boardCreated)="onBoardCreated($event)"
+        (canceled)="onBoardFormCanceled()"
+      />
+    } @else {
+      <button class="sidebar__create" (click)="onCreateNewBoard()" aria-label="Create new board">
+        <img src="assets/icon-board.svg" alt="Add task icon" />
+        <span>+ Create New Board</span>
+      </button>
+    }
   </div>
 
   <div class="sidebar__footer">

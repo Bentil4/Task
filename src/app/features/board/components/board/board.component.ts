@@ -6,6 +6,7 @@ import {
   OnInit,
   input,
   effect,
+  signal,
 } from '@angular/core';
 import { Router } from '@angular/router';
 import {
@@ -15,12 +16,13 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { BoardCardComponent } from '../board-card/board-card.component';
+import { CreateColumnFormComponent } from '../create-column-form/create-column-form.component';
 import { ITask, IColumn } from '../../../../core/models';
 import { BoardService } from '../../../../core/services';
 
 @Component({
   selector: 'app-board',
-  imports: [BoardCardComponent, DragDropModule],
+  imports: [BoardCardComponent, DragDropModule, CreateColumnFormComponent],
   templateUrl: './board.component.html',
   styleUrl: './board.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -35,6 +37,7 @@ export class BoardComponent implements OnInit {
   public readonly sortBy = input<string | null>(null);
 
   public columns: IColumn[] = [];
+  public isCreatingColumn = signal(false);
 
   constructor() {
     effect(() => {
@@ -105,6 +108,22 @@ export class BoardComponent implements OnInit {
 
   public onTaskClick(taskId: string): void {
     this.router.navigate(['/board', this.boardId(), 'edit', taskId]);
+  }
+
+  public onCreateColumn(): void {
+    this.isCreatingColumn.set(true);
+  }
+
+  public onColumnCreated(column: IColumn): void {
+    this.isCreatingColumn.set(false);
+    const success = this.boardService.addColumn(this.boardId(), column.name);
+    if (success) {
+      this.loadBoardData(this.boardId(), this.filterStatus(), this.sortBy());
+    }
+  }
+
+  public onColumnFormCanceled(): void {
+    this.isCreatingColumn.set(false);
   }
 
   ngOnInit(): void {

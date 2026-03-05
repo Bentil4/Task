@@ -1,0 +1,30 @@
+<section class="create-column-form">
+  <h2 class="form-title">Add New Column</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <app-input
+        label="Column Name *"
+        placeholder="e.g. In Progress"
+        [value]="form.get('name')?.value || ''"
+        (valueChange)="
+          form.get('name')?.setValue($event, { emitEvent: false });
+          form.get('name')?.markAsTouched();
+          form.get('name')?.markAsDirty()
+        "
+        [required]="true"
+        [autoFocus]="true"
+        [error]="form.get('name')?.touched ? getErrorMessage('name') : ''"
+      />
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="submit-button" [disabled]="isSubmitting() || form.invalid">
+        {{ isSubmitting() ? 'Creating...' : 'Create Column' }}
+      </button>
+      <button type="button" class="cancel-button" (click)="onCancel()">
+        Cancel
+      </button>
+    </div>
+  </form>
+</section>

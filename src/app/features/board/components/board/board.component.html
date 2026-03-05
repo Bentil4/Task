@@ -20,10 +20,25 @@
           </div>
         </section>
       }
+      @if (isCreatingColumn()) {
+        <div class="board__column-form-wrapper">
+          <app-create-column-form
+            (columnCreated)="onColumnCreated($event)"
+            (canceled)="onColumnFormCanceled()"
+          />
+        </div>
+      } @else {
+        <button class="board__add-column" (click)="onCreateColumn()" aria-label="Add new column">
+          <span>+ New Column</span>
+        </button>
+      }
     </div>
   } @else {
     <div class="board__empty">
       <p class="board__message">This board is empty. Create a new column to get started.</p>
+      <button class="board__add-column" (click)="onCreateColumn()" aria-label="Add new column">
+        <span>+ Add Column</span>
+      </button>
     </div>
   }
 </main>

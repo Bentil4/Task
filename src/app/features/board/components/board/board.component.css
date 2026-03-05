@@ -147,6 +147,34 @@
   color: var(--color-primary);
 }
 
+.board__add-column {
+  min-width: 200px;
+  padding: 24px;
+  background: var(--color-white);
+  border: 2px dashed var(--color-lines-light);
+  border-radius: 6px;
+  color: var(--color-primary);
+  font-weight: var(--font-weight-bold);
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60rem;
+}
+
+.board__add-column:hover {
+  background: var(--color-light-bg);
+  border-color: var(--color-primary);
+}
+
+.board__column-form-wrapper {
+  min-width: 280px;
+  display: flex;
+  align-items: flex-start;
+}
+
 /* Tablet responsive */
 @media (max-width: 768px) {
   .board {
