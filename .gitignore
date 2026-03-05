@@ -72,3 +72,4 @@ COMPONENT_RENAMING.md
 fix-imports.py
 update-components.py
 RESPONSIVE_CHANGES.md
+BOARD_EDIT_DELETE_IMPLEMENTATION.md
