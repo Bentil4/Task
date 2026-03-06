@@ -1,19 +1,18 @@
 import { Injectable, signal, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 import { IBoard, ITask, IColumn } from '../models/board.model';
-import { BOARDS, DATA_URL } from '../constants/app.constants';
+import { BOARDS, STORAGE_KEYS } from '../constants/app.constants';
 import { StorageService } from './storage.service';
+import { environment } from '../../../environments/environment';
 
-const STORAGE_KEY = 'kanban_boards_data';
-
-interface IBoardData {
-  boards?: IBoard[];
-}
 
 @Injectable({
   providedIn: 'root',
 })
 export class BoardService {
   private storageService = inject(StorageService);
+  private http = inject(HttpClient);
   public readonly boards = signal<IBoard[]>(BOARDS);
   public readonly allBoardsData = signal<IBoard[]>([]);
   public readonly isLoading = signal<boolean>(false);
@@ -21,7 +20,7 @@ export class BoardService {
   public async loadBoardsData(): Promise<void> {
     this.isLoading.set(true);
     try {
-      const cached = this.storageService.getItem(STORAGE_KEY);
+      const cached = this.storageService.getItem(STORAGE_KEYS.BOARDS);
       if (cached) {
         const data = JSON.parse(cached);
         this.allBoardsData.set(data);
@@ -30,12 +29,8 @@ export class BoardService {
         return;
       }
 
-      const response = await fetch(DATA_URL);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data: IBoardData = await response.json();
-      const boardsWithIds = data.boards?.map((board: IBoard, index: number) => ({
+      const data = await firstValueFrom(this.http.get<{ boards: IBoard[] }>(environment.apiUrl));
+      const boardsWithIds = data?.boards?.map((board: IBoard, index: number) => ({
         ...board,
         id: board.id || index + 1,
         columns: board.columns?.map((column: IColumn) => ({
@@ -254,7 +249,7 @@ export class BoardService {
 
   private saveToStorage(): void {
     try {
-      this.storageService.setItem(STORAGE_KEY, JSON.stringify(this.allBoardsData()));
+      this.storageService.setItem(STORAGE_KEYS.BOARDS, JSON.stringify(this.allBoardsData()));
     } catch (error) {
       console.error('Failed to save boards to storage:', error);
     }
