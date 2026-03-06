@@ -4,6 +4,9 @@ import { Component, input, output, viewChild, effect, ElementRef, HostListener }
   selector: 'app-confirm-dialog',
   templateUrl: './confirm-dialog.component.html',
   styleUrl: './confirm-dialog.component.css',
+  host: {
+    '(document:keydown.escape)': 'onCancel()'
+  }
 })
 export class ConfirmDialogComponent {
   title = input<string>('Confirm');
@@ -20,11 +23,6 @@ export class ConfirmDialogComponent {
     effect(() => {
       setTimeout(() => this.confirmBtn()?.nativeElement.focus(), 0);
     });
-  }
-  
-  @HostListener('document:keydown.escape')
-  onEscape() {
-    this.onCancel();
   }
 
   onConfirm(): void {

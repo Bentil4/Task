@@ -38,4 +38,13 @@ export class StorageService {
       console.error('Failed to remove from localStorage:', error);
     }
   }
+
+  public clear(): void {
+    if (!this.isAvailable()) return;
+    try {
+      localStorage.clear();
+    } catch (error) {
+      console.error('Failed to clear localStorage:', error);
+    }
+  }
 }
