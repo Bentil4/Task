@@ -95,6 +95,21 @@ Minimum coverage requirements:
 5. Use `jest.useFakeTimers()` for testing async operations with timeouts
 6. Leverage TestBed for integration testing
 
+### Testing Implementation Commits
+
+The Jest testing suite was implemented through incremental commits:
+
+1. **b81ee77** - `chore: configure Jest testing framework`
+2. **8b6c2cd** - `test: add core service tests`
+3. **16aeb6f** - `test: add notification and dialog service tests`
+4. **3931f85** - `test: add component tests for core and board features`
+5. **0511392** - `test: add route guard tests`
+6. **fba933e** - `test: add HTTP error interceptor tests`
+7. **46ccd2a** - `test: add integration tests for component-service interactions`
+8. **582752b** - `test: add header and sidebar component tests`
+9. **11bf59e** - `docs: add comprehensive testing documentation`
+10. **75c31e9** - `feat: add unit tests for various components and services`
+
 ## Running unit tests
 
 To execute unit tests with Jest, use the following command:
