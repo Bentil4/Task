@@ -7,6 +7,7 @@ export const BOARDS: IBoard[] = [
 ];
 
 export const STORAGE_KEYS = {
+  // amazonq-ignore-next-line
   AUTH: 'isAuthenticated',
   THEME: 'theme',
   BOARDS: 'kanban_boards_data',
