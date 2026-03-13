@@ -9,6 +9,5 @@ export const BOARDS: IBoard[] = [
 export const STORAGE_KEYS = {
   AUTH: 'isAuthenticated',
   THEME: 'theme',
+  BOARDS: 'kanban_boards_data',
 } as const;
-
-export const DATA_URL = '/data.json';

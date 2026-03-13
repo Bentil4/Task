@@ -9,6 +9,7 @@
   overflow-x: auto;
   overflow-y: hidden;
   position: relative;
+
 }
 
 .board__backdrop {
@@ -47,8 +48,6 @@
   display: flex;
   gap: 24px;
   align-items: flex-start;
-  justify-content: center;
-  margin: 0 auto;
 }
 
 .board__column {
