@@ -6,7 +6,6 @@ import { BOARDS, STORAGE_KEYS } from '../constants/app.constants';
 import { StorageService } from './storage.service';
 import { environment } from '../../../environments/environment';
 
-
 @Injectable({
   providedIn: 'root',
 })
@@ -30,19 +29,20 @@ export class BoardService {
       }
 
       const data = await firstValueFrom(this.http.get<{ boards: IBoard[] }>(environment.apiUrl));
-      const boardsWithIds = data?.boards?.map((board: IBoard, index: number) => ({
-        ...board,
-        id: board.id || index + 1,
-        columns: board.columns?.map((column: IColumn) => ({
-          ...column,
-          tasks: column.tasks.map((task: ITask) => ({
-            ...task,
-            id: task.id || this.generateTaskId()
-          }))
-        }))
-      })) ?? [];
+      const boardsWithIds =
+        data?.boards?.map((board: IBoard, index: number) => ({
+          ...board,
+          id: board.id || index + 1,
+          columns: board.columns?.map((column: IColumn) => ({
+            ...column,
+            tasks: column.tasks.map((task: ITask) => ({
+              ...task,
+              id: task.id || this.generateTaskId(),
+            })),
+          })),
+        })) ?? [];
       this.allBoardsData.set(boardsWithIds);
-      this.boards.set(boardsWithIds.map(b => ({ id: b.id, name: b.name })));
+      this.boards.set(boardsWithIds.map((b) => ({ id: b.id, name: b.name })));
       this.saveToStorage();
     } catch (error) {
       console.error('Failed to load boards:', error);
@@ -91,7 +91,7 @@ export class BoardService {
       description: taskData.description || '',
       status: taskData.status || '',
       dueDate: taskData.dueDate,
-      subtasks: taskData.subtasks || []
+      subtasks: taskData.subtasks || [],
     };
 
     statusColumn.tasks.push(newTask);
@@ -126,7 +126,7 @@ export class BoardService {
     const updatedTask: ITask = {
       ...existingTask,
       ...taskData,
-      id: existingTask.id
+      id: existingTask.id,
     };
 
     const newColumn = board.columns.find(
@@ -169,34 +169,34 @@ export class BoardService {
 
   public updateBoard(boardId: number, newName: string): boolean {
     const boards = this.allBoardsData();
-    const board = boards.find(b => b.id === boardId);
+    const board = boards.find((b) => b.id === boardId);
     if (!board) return false;
 
     board.name = newName;
     this.allBoardsData.set([...boards]);
-    this.boards.set(boards.map(b => ({ id: b.id, name: b.name })));
+    this.boards.set(boards.map((b) => ({ id: b.id, name: b.name })));
     this.saveToStorage();
     return true;
   }
 
   public deleteBoard(boardId: number): boolean {
     const boards = this.allBoardsData();
-    const index = boards.findIndex(b => b.id === boardId);
+    const index = boards.findIndex((b) => b.id === boardId);
     if (index === -1) return false;
 
     boards.splice(index, 1);
     this.allBoardsData.set([...boards]);
-    this.boards.set(boards.map(b => ({ id: b.id, name: b.name })));
+    this.boards.set(boards.map((b) => ({ id: b.id, name: b.name })));
     this.saveToStorage();
     return true;
   }
 
   public deleteColumn(boardId: number, columnName: string): boolean {
     const boards = this.allBoardsData();
-    const board = boards.find(b => b.id === boardId);
+    const board = boards.find((b) => b.id === boardId);
     if (!board?.columns) return false;
 
-    const index = board.columns.findIndex(c => c.name === columnName);
+    const index = board.columns.findIndex((c) => c.name === columnName);
     if (index === -1) return false;
 
     board.columns.splice(index, 1);
@@ -207,21 +207,21 @@ export class BoardService {
 
   public addBoard(boardName: string): boolean {
     const boards = this.allBoardsData();
-    const newBoardId = Math.max(...boards.map(b => b.id), 0) + 1;
-    
+    const newBoardId = Math.max(...boards.map((b) => b.id), 0) + 1;
+
     const newBoard: IBoard = {
       id: newBoardId,
       name: boardName,
       columns: [
         { name: 'Todo', tasks: [] },
         { name: 'Doing', tasks: [] },
-        { name: 'Done', tasks: [] }
-      ]
+        { name: 'Done', tasks: [] },
+      ],
     };
 
     boards.push(newBoard);
     this.allBoardsData.set([...boards]);
-    this.boards.set(boards.map(b => ({ id: b.id, name: b.name })));
+    this.boards.set(boards.map((b) => ({ id: b.id, name: b.name })));
     this.saveToStorage();
     return true;
   }
@@ -234,7 +234,7 @@ export class BoardService {
 
     const newColumn: IColumn = {
       name: columnName,
-      tasks: []
+      tasks: [],
     };
 
     board.columns.push(newColumn);
