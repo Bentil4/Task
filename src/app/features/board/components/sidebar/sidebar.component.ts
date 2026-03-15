@@ -8,9 +8,16 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { ThemeService, BoardService, DialogService, NotificationService } from '../../../../core/services';
+import { Store } from '@ngrx/store';
+import {
+  ThemeService,
+  BoardService,
+  DialogService,
+  NotificationService,
+} from '../../../../core/services';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { CreateBoardFormComponent } from '../create-board-form/create-board-form.component';
+import * as BoardActions from '../../../../core/store/board/actions/board.actions';
 
 @Component({
   selector: 'app-sidebar',
@@ -21,6 +28,7 @@ import { CreateBoardFormComponent } from '../create-board-form/create-board-form
 })
 export class SidebarComponent implements OnInit {
   private router = inject(Router);
+  private store = inject(Store);
   private boardService = inject(BoardService);
   private dialogService = inject(DialogService);
   public readonly themeService = inject(ThemeService);
@@ -36,8 +44,7 @@ export class SidebarComponent implements OnInit {
 
   public readonly boards = this.boardService.boards;
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   public onCreateNewBoard(): void {
     this.isCreatingBoard.set(true);
@@ -45,10 +52,16 @@ export class SidebarComponent implements OnInit {
 
   public onBoardCreated(boardName: string): void {
     this.isCreatingBoard.set(false);
-    const success = this.boardService.addBoard(boardName);
-    if (success) {
-      this.router.navigate(['/board', this.boardService.boards().length]);
-    }
+    const boards = this.boardService.boards();
+    const nextBoardId = Math.max(...boards.map((board) => board.id), 0) + 1;
+
+    this.store.dispatch(
+      BoardActions.addBoard({
+        boardName,
+      }),
+    );
+
+    this.router.navigate(['/board', nextBoardId]);
   }
 
   public onBoardFormCanceled(): void {
@@ -63,13 +76,14 @@ export class SidebarComponent implements OnInit {
   private notificationService = inject(NotificationService);
 
   public onDeleteBoard(boardId: number): void {
-    const success = this.boardService.deleteBoard(boardId);
-    if (success) {
-      this.notificationService.success('Board deleted successfully');
-      this.router.navigate(['/board', 1]);
-    } else {
-      this.notificationService.error('Failed to delete board');
-    }
+    this.store.dispatch(
+      BoardActions.deleteBoard({
+        boardId,
+      }),
+    );
+
+    this.notificationService.success('Board deleted successfully');
+    this.router.navigate(['/board', 1]);
   }
 
   public onNavigateWithFilter(status: string): void {
