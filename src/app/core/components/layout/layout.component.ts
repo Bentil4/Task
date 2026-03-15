@@ -1,4 +1,12 @@
-import { Component, ChangeDetectionStrategy, signal, inject, computed, effect } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  signal,
+  inject,
+  computed,
+  effect,
+} from '@angular/core';
+import { Store } from '@ngrx/store';
 import { SidebarComponent } from '../../../features/board/components/sidebar/sidebar.component';
 import { HeaderComponent } from '../../../features/board/components/header/header.component';
 import { BoardComponent } from '../../../features/board/components/board/board.component';
@@ -8,6 +16,7 @@ import { BoardService } from '../../services';
 import { ShowSidebarButtonComponent } from '../../../shared/components/show-sidebar-button/show-sidebar-button.component';
 import { IHasUnsavedChanges } from '../../models';
 import { map } from 'rxjs/operators';
+import * as BoardActions from '../../store/board/actions/board.actions';
 
 @Component({
   selector: 'app-layout',
@@ -19,10 +28,11 @@ import { map } from 'rxjs/operators';
 export class LayoutComponent implements IHasUnsavedChanges {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private store = inject(Store);
   private boardService = inject(BoardService);
-  
+
   public readonly sidebarHidden = signal(this.isMobileOrTablet());
-  
+
   constructor() {
     effect(() => {
       if (typeof window !== 'undefined') {
@@ -35,42 +45,42 @@ export class LayoutComponent implements IHasUnsavedChanges {
       }
     });
   }
-  
+
   private isMobileOrTablet(): boolean {
     if (typeof window === 'undefined') return false;
     return window.innerWidth <= 768;
   }
-  
+
   public readonly boardId = toSignal(
     this.route.paramMap.pipe(
-      map(params => {
+      map((params) => {
         const id = params.get('id');
         return id ? Number(id) : 1;
-      })
+      }),
     ),
-    { initialValue: 1 }
+    { initialValue: 1 },
   );
-  
+
   public readonly boardTitle = computed(() => {
     const board = this.boardService.getBoardById(this.boardId());
     return board?.name ?? 'Platform Launch';
   });
-  
+
   public readonly filterStatus = toSignal(
-    this.route.queryParamMap.pipe(map(params => params.get('filter'))),
-    { initialValue: null }
+    this.route.queryParamMap.pipe(map((params) => params.get('filter'))),
+    { initialValue: null },
   );
-  
+
   public readonly sortBy = toSignal(
-    this.route.queryParamMap.pipe(map(params => params.get('sort'))),
-    { initialValue: null }
+    this.route.queryParamMap.pipe(map((params) => params.get('sort'))),
+    { initialValue: null },
   );
 
   public onFilterChange(status: string): void {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { filter: status || null },
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
   }
 
@@ -79,7 +89,7 @@ export class LayoutComponent implements IHasUnsavedChanges {
   }
 
   public onBoardUpdated(): void {
-    this.boardService.loadBoardsData();
+    this.store.dispatch(BoardActions.loadBoards());
   }
 
   public onBoardDeleted(): void {
