@@ -14,6 +14,7 @@ describe('BoardComponent Integration Tests', () => {
   let component: BoardComponent;
   let fixture: ComponentFixture<BoardComponent>;
   let boardService: BoardService;
+  let getBoardDataSpy: jest.SpyInstance;
 
   const mockBoardData = {
     id: 1,
@@ -52,7 +53,7 @@ describe('BoardComponent Integration Tests', () => {
     boardService = TestBed.inject(BoardService);
 
     boardService.allBoardsData.set([mockBoardData]);
-    jest.spyOn(boardService, 'getBoardDataByIndex').mockReturnValue(mockBoardData);
+    getBoardDataSpy = jest.spyOn(boardService, 'getBoardDataByIndex').mockReturnValue(mockBoardData);
     
     fixture.detectChanges();
   });
@@ -83,7 +84,7 @@ describe('BoardComponent Integration Tests', () => {
       ]
     };
 
-    jest.spyOn(boardService, 'getBoardDataByIndex').mockReturnValue(updatedData);
+    getBoardDataSpy.mockReturnValue(updatedData);
     component.loadBoardData(1, null, null);
 
     expect(component.columns[0].tasks).toHaveLength(2);
@@ -118,7 +119,7 @@ describe('BoardComponent Integration Tests', () => {
   });
 
   it('should handle missing board data gracefully', () => {
-    jest.spyOn(boardService, 'getBoardDataByIndex').mockReturnValue(undefined);
+    getBoardDataSpy.mockReturnValue(undefined);
     
     expect(() => component.loadBoardData(999, null, null)).not.toThrow();
   });
