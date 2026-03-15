@@ -1,15 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { BoardComponent } from './board.component';
 import { BoardService } from '../../../../core/services';
 import { signal } from '@angular/core';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
+import * as BoardActions from '../../../../core/store/board/actions/board.actions';
 
 describe('BoardComponent', () => {
   let component: BoardComponent;
   let fixture: ComponentFixture<BoardComponent>;
   let mockRouter: jest.Mocked<Router>;
   let mockBoardService: jest.Mocked<Partial<BoardService>>;
+  let mockStore: { dispatch: jest.Mock };
 
   const mockBoardData = {
     id: 1,
@@ -31,11 +34,9 @@ describe('BoardComponent', () => {
 
   beforeEach(async () => {
     mockRouter = { navigate: jest.fn() } as any;
+    mockStore = { dispatch: jest.fn() };
     mockBoardService = {
       getBoardDataByIndex: jest.fn().mockReturnValue(mockBoardData),
-      updateTask: jest.fn().mockReturnValue(true),
-      addColumn: jest.fn().mockReturnValue(true),
-      loadBoardsData: jest.fn().mockResolvedValue(undefined),
       allBoardsData: signal([mockBoardData])
     };
 
@@ -43,7 +44,8 @@ describe('BoardComponent', () => {
       imports: [BoardComponent],
       providers: [
         { provide: Router, useValue: mockRouter },
-        { provide: BoardService, useValue: mockBoardService }
+        { provide: BoardService, useValue: mockBoardService },
+        { provide: Store, useValue: mockStore }
       ]
     }).compileComponents();
 
@@ -58,7 +60,7 @@ describe('BoardComponent', () => {
 
   it('should load board data on init', () => {
     component.ngOnInit();
-    expect(mockBoardService.loadBoardsData).toHaveBeenCalled();
+    expect(mockStore.dispatch).toHaveBeenCalledWith(BoardActions.loadBoards());
   });
 
   it('should filter tasks by status', () => {
@@ -104,7 +106,9 @@ describe('BoardComponent', () => {
     expect(component.isCreatingColumn()).toBe(true);
 
     component.onColumnCreated({ name: 'New Column', tasks: [] });
-    expect(mockBoardService.addColumn).toHaveBeenCalledWith(1, 'New Column');
+    expect(mockStore.dispatch).toHaveBeenCalledWith(
+      BoardActions.addColumn({ boardId: 1, columnName: 'New Column' })
+    );
     expect(component.isCreatingColumn()).toBe(false);
   });
 
