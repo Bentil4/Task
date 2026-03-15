@@ -1,4 +1,4 @@
-import { Component, input, output, viewChild, effect, ElementRef, HostListener } from '@angular/core';
+import { Component, input, output, viewChild, effect, ElementRef } from '@angular/core';
 
 @Component({
   selector: 'app-confirm-dialog',
