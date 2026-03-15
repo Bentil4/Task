@@ -1,23 +1,45 @@
-import { TestBed } from '@angular/core/testing';
-import { App } from './app';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AppComponent } from './app.component';
+import { DialogService } from './core/services/dialog.service';
+import { provideRouter } from '@angular/router';
 
-describe('App', () => {
+describe('AppComponent', () => {
+  let component: AppComponent;
+  let fixture: ComponentFixture<AppComponent>;
+  let dialogService: DialogService;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [App],
+      imports: [AppComponent],
+      providers: [
+        provideRouter([]),
+        DialogService
+      ]
     }).compileComponents();
+
+    fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
+    dialogService = TestBed.inject(DialogService);
+    fixture.detectChanges();
   });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(App);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(component).toBeTruthy();
   });
 
-  it('should render title', async () => {
-    const fixture = TestBed.createComponent(App);
-    await fixture.whenStable();
+  it('should inject DialogService', () => {
+    expect(component.dialogService).toBe(dialogService);
+  });
+
+  it('should render router outlet', () => {
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, kanban');
+    const routerOutlet = compiled.querySelector('router-outlet');
+    expect(routerOutlet).toBeTruthy();
+  });
+
+  it('should render notification component', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    const notification = compiled.querySelector('app-notification');
+    expect(notification).toBeTruthy();
   });
 });

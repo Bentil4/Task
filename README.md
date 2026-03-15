@@ -42,12 +42,80 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-## Running unit tests
+## Testing
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+This project uses [Jest](https://jestjs.io/) as the testing framework, replacing the default Jasmine/Karma setup.
+
+### Running Tests
+
+To execute unit tests:
 
 ```bash
-ng test
+npm test
+```
+
+To run tests in watch mode:
+
+```bash
+npm run test:watch
+```
+
+To generate code coverage report:
+
+```bash
+npm run test:coverage
+```
+
+Coverage reports are generated in the `coverage/` directory. Open `coverage/lcov-report/index.html` in your browser to view detailed coverage metrics.
+![alt text](<public/test cov.png>)
+
+### Test Organization
+
+Test files follow the naming convention `*.spec.ts` and are located alongside their corresponding source files:
+
+- **Component Tests**: Test UI components, inputs/outputs, and template bindings
+- **Service Tests**: Test business logic, data management, and API interactions
+- **Interceptor Tests**: Test HTTP error handling and request/response transformations
+- **Integration Tests**: Test component-service interactions using TestBed
+
+### Coverage Thresholds
+
+Minimum coverage requirements:
+- Statements: 50%
+- Branches: 30%
+- Functions: 40%
+- Lines: 50%
+
+### Testing Best Practices
+
+1. Write tests alongside new features
+2. Use descriptive test names that explain the expected behavior
+3. Mock external dependencies (services, HTTP calls)
+4. Test edge cases (null, undefined, empty arrays)
+5. Use `jest.useFakeTimers()` for testing async operations with timeouts
+6. Leverage TestBed for integration testing
+
+### Testing Implementation Commits
+
+The Jest testing suite was implemented through incremental commits:
+
+1. **b81ee77** - `chore: configure Jest testing framework`
+2. **8b6c2cd** - `test: add core service tests`
+3. **16aeb6f** - `test: add notification and dialog service tests`
+4. **3931f85** - `test: add component tests for core and board features`
+5. **0511392** - `test: add route guard tests`
+6. **fba933e** - `test: add HTTP error interceptor tests`
+7. **46ccd2a** - `test: add integration tests for component-service interactions`
+8. **582752b** - `test: add header and sidebar component tests`
+9. **11bf59e** - `docs: add comprehensive testing documentation`
+10. **75c31e9** - `feat: add unit tests for various components and services`
+
+## Running unit tests
+
+To execute unit tests with Jest, use the following command:
+
+```bash
+npm test
 ```
 
 ## Running end-to-end tests

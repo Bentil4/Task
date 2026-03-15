@@ -1,6 +1,6 @@
 import { boardReducer } from './board.reducer';
-import { initialBoardState } from './board.state';
-import * as BoardActions from './board.actions';
+import { initialBoardState } from '../board.state';
+import * as BoardActions from '../actions/board.actions';
 
 describe('BoardReducer', () => {
   it('should return the initial state', () => {
