@@ -1,8 +1,10 @@
 import { Component, ChangeDetectionStrategy, input, output, signal, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Store } from '@ngrx/store';
 import { ButtonComponent } from '../../../../shared/components';
-import { BoardService, NotificationService } from '../../../../core/services';
+import { NotificationService } from '../../../../core/services';
+import * as BoardActions from '../../../../core/store/board/actions/board.actions';
 
 @Component({
   selector: 'app-header',
@@ -12,7 +14,7 @@ import { BoardService, NotificationService } from '../../../../core/services';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
-  private boardService = inject(BoardService);
+  private store = inject(Store);
   private notificationService = inject(NotificationService);
 
   public readonly title = input<string>('Platform Launch');
@@ -63,27 +65,32 @@ export class HeaderComponent {
       return;
     }
 
-    const success = this.boardService.updateBoard(this.boardId(), newName);
-    if (success) {
-      this.notificationService.success('Board updated successfully');
-      this.isEditingBoard.set(false);
-      this.boardUpdated.emit();
-    } else {
-      this.notificationService.error('Failed to update board');
-    }
+    this.store.dispatch(
+      BoardActions.updateBoard({
+        boardId: this.boardId(),
+        newName,
+      }),
+    );
+
+    this.notificationService.success('Board updated successfully');
+    this.isEditingBoard.set(false);
+    this.boardUpdated.emit();
   }
 
   public deleteBoard(): void {
-    if (!confirm(`Are you sure you want to delete "${this.title()}"? This action cannot be undone.`)) {
+    if (
+      !confirm(`Are you sure you want to delete "${this.title()}"? This action cannot be undone.`)
+    ) {
       return;
     }
 
-    const success = this.boardService.deleteBoard(this.boardId());
-    if (success) {
-      this.notificationService.success('Board deleted successfully');
-      this.boardDeleted.emit();
-    } else {
-      this.notificationService.error('Failed to delete board');
-    }
+    this.store.dispatch(
+      BoardActions.deleteBoard({
+        boardId: this.boardId(),
+      }),
+    );
+
+    this.notificationService.success('Board deleted successfully');
+    this.boardDeleted.emit();
   }
 }
