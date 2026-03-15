@@ -85,6 +85,9 @@ describe('BoardComponent Integration Tests', () => {
     };
     getBoardDataByIndexSpy.mockReturnValue(updatedData);
 
+    getBoardDataByIndexSpy.mockReturnValue(updatedData);
+    component.loadBoardData(1, null, null);
+
 
     expect(component.columns[0].tasks).toHaveLength(2);
     expect(component.columns[0].tasks[1].title).toBe('New Task');
@@ -119,6 +122,7 @@ describe('BoardComponent Integration Tests', () => {
 
   it('should handle missing board data gracefully', () => {
     getBoardDataByIndexSpy.mockReturnValue(undefined);
+    
     expect(() => component.loadBoardData(999, null, null)).not.toThrow();
   });
 });
