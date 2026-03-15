@@ -1,11 +1,13 @@
 import { Component, inject, signal, OnInit, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { EditTaskFormComponent } from '../../components/edit-task-form/edit-task-form.component';
 import { ConfirmDialogComponent } from '../../../../shared/components';
 import { ITaskFormData, ITask, IHasUnsavedChanges } from '../../../../core/models';
 import { BoardService, NotificationService, DialogService } from '../../../../core/services';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
+import * as BoardActions from '../../../../core/store/board/actions/board.actions';
 
 @Component({
   selector: 'app-edit-task-page',
@@ -16,6 +18,7 @@ import { map } from 'rxjs/operators';
 export class EditTaskPageComponent implements OnInit, IHasUnsavedChanges {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private store = inject(Store);
   private boardService = inject(BoardService);
   private notificationService = inject(NotificationService);
   private dialogService = inject(DialogService);
@@ -70,15 +73,16 @@ export class EditTaskPageComponent implements OnInit, IHasUnsavedChanges {
       }))
     };
     
-    const success = this.boardService.updateTask(boardId, taskId, task);
-    
-    if (success) {
-      this.notificationService.success('Task updated successfully');
-      this.navigateToBoard();
-    } else {
-      this.notificationService.error('Failed to update task');
-      this.isSubmitting.set(false);
-    }
+    this.store.dispatch(
+      BoardActions.updateTask({
+        boardId,
+        taskId,
+        taskData: task
+      })
+    );
+
+    this.notificationService.success('Task updated successfully');
+    this.navigateToBoard();
   }
 
   async onCancel(): Promise<void> {
@@ -113,16 +117,15 @@ export class EditTaskPageComponent implements OnInit, IHasUnsavedChanges {
       return;
     }
     
-    const success = this.boardService.deleteTask(boardId, taskId);
-    
-    if (success) {
-      this.notificationService.success('Task deleted successfully');
-      this.navigateToBoard();
-    } else {
-      this.notificationService.error('Failed to delete task');
-      this.isSubmitting.set(false);
-      this.showDeleteConfirm.set(false);
-    }
+    this.store.dispatch(
+      BoardActions.deleteTask({
+        boardId,
+        taskId
+      })
+    );
+
+    this.notificationService.success('Task deleted successfully');
+    this.navigateToBoard();
   }
 
   onDeleteCancel(): void {
