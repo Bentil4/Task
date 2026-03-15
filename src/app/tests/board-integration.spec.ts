@@ -83,9 +83,11 @@ describe('BoardComponent Integration Tests', () => {
         mockBoardData.columns[1]
       ]
     };
+    getBoardDataByIndexSpy.mockReturnValue(updatedData);
 
     getBoardDataSpy.mockReturnValue(updatedData);
     component.loadBoardData(1, null, null);
+
 
     expect(component.columns[0].tasks).toHaveLength(2);
     expect(component.columns[0].tasks[1].title).toBe('New Task');
