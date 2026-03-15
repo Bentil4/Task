@@ -1,10 +1,12 @@
 import { Component, inject, signal, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
 import { AddTaskFormComponent } from '../../components/add-task-form/add-task-form.component';
 import { ITaskFormData, IHasUnsavedChanges } from '../../../../core/models';
 import { BoardService, NotificationService, DialogService } from '../../../../core/services';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs/operators';
+import * as BoardActions from '../../../../core/store/board/actions/board.actions';
 
 @Component({
   selector: 'app-new-task-page',
@@ -15,7 +17,7 @@ import { map } from 'rxjs/operators';
 export class NewTaskPageComponent implements IHasUnsavedChanges {
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private boardService = inject(BoardService);
+  private store = inject(Store);
   private notificationService = inject(NotificationService);
   private dialogService = inject(DialogService);
 
@@ -23,37 +25,36 @@ export class NewTaskPageComponent implements IHasUnsavedChanges {
 
   isSubmitting = signal(false);
 
-  boardId = toSignal(
-    this.route.paramMap.pipe(map(params => Number(params.get('id')) || 1)),
-    { initialValue: 1 }
-  );
+  boardId = toSignal(this.route.paramMap.pipe(map((params) => Number(params.get('id')) || 1)), {
+    initialValue: 1,
+  });
 
   onTaskCreated(taskData: ITaskFormData): void {
     if (this.isSubmitting()) return;
-    
+
     this.isSubmitting.set(true);
     const boardId = this.boardId();
-    
+
     const task = {
       title: taskData.title,
       description: taskData.description,
       status: taskData.status,
       dueDate: taskData.dueDate,
-      subtasks: taskData.subtasks.map(st => ({
+      subtasks: taskData.subtasks.map((st) => ({
         title: st.title,
-        isCompleted: st.isCompleted || false
-      }))
+        isCompleted: st.isCompleted || false,
+      })),
     };
-    
-    const success = this.boardService.addTask(boardId, task);
-    
-    if (success) {
-      this.notificationService.success('Task created successfully');
-      this.navigateToBoard();
-    } else {
-      this.notificationService.error('Failed to create task');
-      this.isSubmitting.set(false);
-    }
+
+    this.store.dispatch(
+      BoardActions.addTask({
+        boardId,
+        taskData: task,
+      }),
+    );
+
+    this.notificationService.success('Task created successfully');
+    this.navigateToBoard();
   }
 
   async onCancel(): Promise<void> {
@@ -63,7 +64,7 @@ export class NewTaskPageComponent implements IHasUnsavedChanges {
       confirmText: 'Yes, Cancel',
       cancelText: 'No, Continue',
     });
-    
+
     if (confirmed) {
       this.navigateToBoard();
     }
